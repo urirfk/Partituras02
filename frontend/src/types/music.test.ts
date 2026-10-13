@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { Score, DEFAULT_SCORE_CONFIG } from './scoreConfig'
+import { DEFAULT_SCORE_CONFIG } from './scoreConfig'
 import type { Measure } from './music'
 
 describe('Music Domain Types', () => {
