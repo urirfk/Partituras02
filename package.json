@@ -1,0 +1,21 @@
+{
+  "name": "partituras02-root",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Sistema de limpieza y reformatizado didáctico de partituras para piano",
+  "scripts": {
+    "dev:front": "npm --prefix frontend run dev",
+    "dev:back": "PYTHONPATH=backend backend/.venv/bin/uvicorn app.main:app --reload",
+    "build": "npm --prefix frontend run build",
+    "lint:front": "npm --prefix frontend run lint",
+    "lint:back": "backend/.venv/bin/ruff check backend",
+    "lint": "npm run lint:front && npm run lint:back",
+    "typecheck:front": "npm --prefix frontend run typecheck",
+    "typecheck:back": "backend/.venv/bin/mypy backend/app backend/tests",
+    "typecheck": "npm run typecheck:front && npm run typecheck:back",
+    "test:front": "npm --prefix frontend run test",
+    "test:back": "PYTHONPATH=backend backend/.venv/bin/pytest backend/tests",
+    "test": "npm run test:front && npm run test:back",
+    "validate": "npm run lint && npm run typecheck && npm test"
+  }
+}
