@@ -1,7 +1,7 @@
 import React from 'react'
 import type { LayoutedMeasure } from '../layout/systemPartitioning'
 import type { Clef } from './pitchCoordinates'
-import type { Note, ChordSymbol } from '../../types/music'
+import type { Note, ChordSymbol, StaffType } from '../../types/music'
 import type { ChordNotation } from '../../types/scoreConfig'
 import { SvgNote } from './SvgNote'
 import { SvgChord } from './SvgChord'
@@ -16,6 +16,8 @@ export interface SvgMeasureProps {
   baseY: number
   lineSpacing?: number
   clef?: Clef
+  staffType?: StaffType
+  staffGap?: number
   showNoteNames?: boolean
   showAccidentals?: boolean
   showFingerings?: boolean
@@ -35,6 +37,8 @@ export const SvgMeasure: React.FC<SvgMeasureProps> = ({
   baseY,
   lineSpacing = 10,
   clef = 'treble',
+  staffType,
+  staffGap = 50,
   showNoteNames = true,
   showAccidentals = true,
   showFingerings = true,
@@ -48,7 +52,16 @@ export const SvgMeasure: React.FC<SvgMeasureProps> = ({
   onChordClick,
   className = '',
 }) => {
-  const bottomLineY = baseY + 4 * lineSpacing
+  const isGrandStaff =
+    staffType === 'grand' ||
+    Boolean(
+      layoutedMeasure.positionedLowerNotes &&
+        layoutedMeasure.positionedLowerNotes.length > 0,
+    )
+  const trebleBottomLineY = baseY + 4 * lineSpacing
+  const bassBaseY = baseY + 4 * lineSpacing + staffGap
+  const bassBottomLineY = bassBaseY + 4 * lineSpacing
+  const barlineEndY = isGrandStaff ? bassBottomLineY : trebleBottomLineY
   const rightBarlineX = layoutedMeasure.startX + layoutedMeasure.width
 
   // Find tuplet brackets
@@ -82,7 +95,7 @@ export const SvgMeasure: React.FC<SvgMeasureProps> = ({
         x1={rightBarlineX}
         y1={baseY}
         x2={rightBarlineX}
-        y2={bottomLineY}
+        y2={barlineEndY}
         stroke="#27272a"
         strokeWidth={isLastInSystem ? 1.5 : 1}
         data-testid={`barline-${layoutedMeasure.measure.number}`}
@@ -137,7 +150,7 @@ export const SvgMeasure: React.FC<SvgMeasureProps> = ({
           note={pn.note}
           x={pn.x}
           clef="bass"
-          baseY={baseY + 70} // Bass staff offset
+          baseY={bassBaseY}
           lineSpacing={lineSpacing}
           showNoteNames={showNoteNames}
           showAccidentals={showAccidentals}

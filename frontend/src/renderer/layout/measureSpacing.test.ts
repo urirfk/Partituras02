@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import {
   calculateMeasureNotePositions,
+  calculateGrandStaffNotePositions,
   getDurationWeight,
 } from './measureSpacing'
 import type { Note } from '../../types/music'
@@ -81,4 +82,47 @@ describe('Measure Spacing Algorithm', () => {
     const positioned = calculateMeasureNotePositions([], { measureWidth: 400 })
     expect(positioned).toEqual([])
   })
+
+  describe('Grand Staff Vertical Synchronization', () => {
+    it('synchronizes concurrent pulses across upper and lower staves to identical X coordinates', () => {
+      // Upper hand: 2 half notes (onsets: 0, 2.0)
+      const upperNotes: Note[] = [
+        createNote('u1', 'half'),
+        createNote('u2', 'half'),
+      ]
+      // Lower hand: 4 quarter notes (onsets: 0, 1.0, 2.0, 3.0)
+      const lowerNotes: Note[] = [
+        createNote('l1', 'quarter'),
+        createNote('l2', 'quarter'),
+        createNote('l3', 'quarter'),
+        createNote('l4', 'quarter'),
+      ]
+
+      const { upper, lower } = calculateGrandStaffNotePositions(
+        upperNotes,
+        lowerNotes,
+        {
+          measureWidth: 400,
+          startPadding: 30,
+          endPadding: 20,
+          minNoteDistance: 35,
+        },
+      )
+
+      expect(upper).toHaveLength(2)
+      expect(lower).toHaveLength(4)
+
+      // Pulse 1 (onset 0): u1 and l1 MUST share the exact same X
+      expect(upper[0].x).toBe(lower[0].x)
+
+      // Pulse 3 (onset 2.0): u2 and l3 MUST share the exact same X
+      expect(upper[1].x).toBe(lower[2].x)
+
+      // Intermediate notes l2 (onset 1.0) and l4 (onset 3.0) must maintain progression
+      expect(lower[1].x).toBeGreaterThan(lower[0].x)
+      expect(lower[2].x).toBeGreaterThan(lower[1].x)
+      expect(lower[3].x).toBeGreaterThan(lower[2].x)
+    })
+  })
 })
+

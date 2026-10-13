@@ -93,3 +93,112 @@ export function calculateMeasureNotePositions(
     x: startPadding + adjustedPositions[index] * scale,
   }))
 }
+
+export interface GrandStaffPositionedNotes {
+  upper: PositionedNote[]
+  lower: PositionedNote[]
+}
+
+/**
+ * Calculates vertically synchronized horizontal coordinates for notes on a Grand Staff,
+ * guaranteeing that concurrent pulses across both hands share identical X coordinates.
+ */
+export function calculateGrandStaffNotePositions(
+  upperNotes: Note[],
+  lowerNotes: Note[],
+  options: MeasureSpacingOptions,
+): GrandStaffPositionedNotes {
+  if (!lowerNotes || lowerNotes.length === 0) {
+    return {
+      upper: calculateMeasureNotePositions(upperNotes, options),
+      lower: [],
+    }
+  }
+
+  if (!upperNotes || upperNotes.length === 0) {
+    return {
+      upper: [],
+      lower: calculateMeasureNotePositions(lowerNotes, options),
+    }
+  }
+
+  const {
+    measureWidth,
+    startPadding = 35,
+    endPadding = 25,
+    minNoteDistance = 38,
+  } = options
+
+  // Map each note to its onset time within the measure
+  interface TimedNote {
+    note: Note
+    onset: number
+    weight: number
+  }
+
+  const getTimed = (notes: Note[]): TimedNote[] => {
+    let onset = 0
+    return notes.map((note) => {
+      const weight = getDurationWeight(note.duration, note.dots)
+      const timed = { note, onset, weight }
+      onset += weight
+      return timed
+    })
+  }
+
+  const upperTimed = getTimed(upperNotes)
+  const lowerTimed = getTimed(lowerNotes)
+
+  // Collect and sort unique onsets across both hands
+  const uniqueOnsets = Array.from(
+    new Set([...upperTimed.map((t) => t.onset), ...lowerTimed.map((t) => t.onset)]),
+  ).sort((a, b) => a - b)
+
+  if (uniqueOnsets.length === 1) {
+    const singleX = startPadding + (measureWidth - startPadding - endPadding) / 2
+    return {
+      upper: upperTimed.map((t) => ({ note: t.note, x: singleX })),
+      lower: lowerTimed.map((t) => ({ note: t.note, x: singleX })),
+    }
+  }
+
+  const availableWidth = Math.max(
+    measureWidth - startPadding - endPadding,
+    (uniqueOnsets.length - 1) * minNoteDistance,
+  )
+
+  // Find max measure length in beats
+  const maxOnset = uniqueOnsets[uniqueOnsets.length - 1]
+  const upperTotal = upperTimed.reduce((sum, t) => sum + t.weight, 0)
+  const lowerTotal = lowerTimed.reduce((sum, t) => sum + t.weight, 0)
+  const measureSpan = Math.max(maxOnset, upperTotal, lowerTotal)
+
+  // Raw proportional positions for each onset
+  const rawPositions = uniqueOnsets.map((onset) =>
+    measureSpan > 0 ? (onset / measureSpan) * availableWidth : 0,
+  )
+
+  // Enforce minimum note distance
+  const adjustedPositions = [...rawPositions]
+  for (let i = 1; i < adjustedPositions.length; i++) {
+    const minRequiredX = adjustedPositions[i - 1] + minNoteDistance
+    if (adjustedPositions[i] < minRequiredX) {
+      adjustedPositions[i] = minRequiredX
+    }
+  }
+
+  // Rescale if required
+  const lastX = adjustedPositions[adjustedPositions.length - 1]
+  const scale = lastX > availableWidth ? availableWidth / lastX : 1.0
+
+  const onsetToX = new Map<number, number>()
+  uniqueOnsets.forEach((onset, idx) => {
+    onsetToX.set(onset, startPadding + adjustedPositions[idx] * scale)
+  })
+
+  return {
+    upper: upperTimed.map((t) => ({ note: t.note, x: onsetToX.get(t.onset) ?? startPadding })),
+    lower: lowerTimed.map((t) => ({ note: t.note, x: onsetToX.get(t.onset) ?? startPadding })),
+  }
+}
+

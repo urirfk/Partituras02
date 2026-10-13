@@ -2,6 +2,7 @@ import type { Measure } from '../../types/music'
 import type { MeasuresPerSystem } from '../../types/scoreConfig'
 import {
   calculateMeasureNotePositions,
+  calculateGrandStaffNotePositions,
   PositionedNote,
 } from './measureSpacing'
 
@@ -65,13 +66,31 @@ export function partitionMeasuresIntoSystems(
       const isFirst = idx === 0
       const startX = leftMargin + idx * measureWidth
 
-      // Calculate upper notes positions
-      const relativeNotes = calculateMeasureNotePositions(measure.notes, {
-        measureWidth,
-        startPadding: isFirst ? 20 : 25,
-        endPadding: 20,
-        minNoteDistance,
-      })
+      // Calculate notes positions (synchronized if grand staff)
+      let relativeNotes: PositionedNote[]
+      let relativeLower: PositionedNote[] | undefined
+
+      if (measure.lowerNotes && measure.lowerNotes.length > 0) {
+        const synchronized = calculateGrandStaffNotePositions(
+          measure.notes,
+          measure.lowerNotes,
+          {
+            measureWidth,
+            startPadding: isFirst ? 20 : 25,
+            endPadding: 20,
+            minNoteDistance,
+          },
+        )
+        relativeNotes = synchronized.upper
+        relativeLower = synchronized.lower
+      } else {
+        relativeNotes = calculateMeasureNotePositions(measure.notes, {
+          measureWidth,
+          startPadding: isFirst ? 20 : 25,
+          endPadding: 20,
+          minNoteDistance,
+        })
+      }
 
       // Convert relative note X to absolute system X
       const positionedNotes = relativeNotes.map((pn) => ({
@@ -79,20 +98,10 @@ export function partitionMeasuresIntoSystems(
         x: startX + pn.x,
       }))
 
-      // Calculate lower notes if present (grand staff)
-      let positionedLowerNotes: PositionedNote[] | undefined
-      if (measure.lowerNotes && measure.lowerNotes.length > 0) {
-        const relativeLower = calculateMeasureNotePositions(measure.lowerNotes, {
-          measureWidth,
-          startPadding: isFirst ? 20 : 25,
-          endPadding: 20,
-          minNoteDistance,
-        })
-        positionedLowerNotes = relativeLower.map((pn) => ({
-          note: pn.note,
-          x: startX + pn.x,
-        }))
-      }
+      const positionedLowerNotes = relativeLower?.map((pn) => ({
+        note: pn.note,
+        x: startX + pn.x,
+      }))
 
       return {
         measure,
