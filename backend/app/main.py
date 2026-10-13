@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from app.api.endpoints.ingestion import router as ingestion_router
 from app.api.health import router as health_router
 
 app = FastAPI(
@@ -19,6 +20,7 @@ app.add_middleware(
 )
 
 app.include_router(health_router, tags=["Health"])
+app.include_router(ingestion_router, prefix="/api", tags=["Ingestion"])
 
 
 if __name__ == "__main__":
