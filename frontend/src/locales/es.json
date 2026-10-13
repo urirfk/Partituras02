@@ -61,5 +61,21 @@
     "of": "de",
     "noDocument": "No hay ningún documento cargado.",
     "originalTitle": "Documento Original Escaneado"
+  },
+  "editor": {
+    "editNote": "Editar Nota",
+    "pitch": "Altura",
+    "octave": "Octava",
+    "accidental": "Alteración",
+    "natural": "Natural (♮)",
+    "sharp": "Sostenido (♯)",
+    "flat": "Bemol (♭)",
+    "fingering": "Digitación",
+    "noFingering": "Sin digitación",
+    "duration": "Duración",
+    "isRest": "Silencio",
+    "lyrics": "Letra",
+    "close": "Cerrar",
+    "measure": "Compás"
   }
 }

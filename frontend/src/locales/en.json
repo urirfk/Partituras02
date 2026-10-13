@@ -61,5 +61,21 @@
     "of": "of",
     "noDocument": "No document loaded.",
     "originalTitle": "Scanned Original Document"
+  },
+  "editor": {
+    "editNote": "Edit Note",
+    "pitch": "Pitch",
+    "octave": "Octave",
+    "accidental": "Accidental",
+    "natural": "Natural (♮)",
+    "sharp": "Sharp (♯)",
+    "flat": "Flat (♭)",
+    "fingering": "Fingering",
+    "noFingering": "No fingering",
+    "duration": "Duration",
+    "isRest": "Rest",
+    "lyrics": "Lyrics",
+    "close": "Close",
+    "measure": "Measure"
   }
 }

@@ -110,7 +110,16 @@ export const SvgNote: React.FC<SvgNoteProps> = ({
 
   return (
     <g
-      className={`svg-note group ${selected ? 'is-selected' : ''} ${className}`}
+      role="button"
+      tabIndex={0}
+      className={`svg-note group cursor-pointer focus:outline-none ${selected ? 'is-selected' : ''} ${className}`}
+      onClick={onClick}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          onClick?.();
+        }
+      }}
       data-testid="svg-note"
     >
       {/* Selection Glow / Ring */}
@@ -179,7 +188,6 @@ export const SvgNote: React.FC<SvgNoteProps> = ({
         pitch={pitch}
         showNoteNames={showNoteNames}
         showAccidentals={showAccidentals}
-        onClick={onClick}
       />
 
       {/* Fingering Number (1 to 5) above note */}
