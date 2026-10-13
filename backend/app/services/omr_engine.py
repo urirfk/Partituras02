@@ -1,6 +1,6 @@
 import uuid
 from dataclasses import dataclass
-from typing import List, Optional, Tuple, Union
+from typing import List, Optional, Sequence, Tuple, Union
 
 import cv2
 import music21
@@ -282,7 +282,7 @@ def process_omr_image(
 
 
 def process_omr_pages(
-    pages: List[Union[np.ndarray, bytes]],
+    pages: Sequence[Union[np.ndarray, bytes]],
     title: str = "Partitura OMR Multipágina",
     composer: str = "Desconocido",
 ) -> ScoreSchema:
