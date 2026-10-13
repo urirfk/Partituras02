@@ -1,7 +1,8 @@
 import React from 'react'
 import type { SystemLayout } from '../layout/systemPartitioning'
 import type { Clef } from './pitchCoordinates'
-import type { KeySignature, Note } from '../../types/music'
+import type { KeySignature, Note, ChordSymbol } from '../../types/music'
+import type { ChordNotation } from '../../types/scoreConfig'
 import { StaffLines } from './StaffLines'
 import { SvgMeasure } from './SvgMeasure'
 
@@ -14,10 +15,14 @@ export interface SvgSystemProps {
   showNoteNames?: boolean
   showAccidentals?: boolean
   showFingerings?: boolean
+  showChords?: boolean
+  chordNotation?: ChordNotation
+  showTuplets?: boolean
   showLyrics?: boolean
   showMeasureNumbers?: boolean
   selectedNoteId?: string
   onNoteClick?: (note: Note) => void
+  onChordClick?: (chord: ChordSymbol) => void
   className?: string
 }
 
@@ -30,10 +35,14 @@ export const SvgSystem: React.FC<SvgSystemProps> = ({
   showNoteNames = true,
   showAccidentals = true,
   showFingerings = true,
+  showChords = true,
+  chordNotation = 'latin',
+  showTuplets = true,
   showLyrics = true,
   showMeasureNumbers = true,
   selectedNoteId,
   onNoteClick,
+  onChordClick,
   className = '',
 }) => {
   return (
@@ -113,10 +122,14 @@ export const SvgSystem: React.FC<SvgSystemProps> = ({
           showNoteNames={showNoteNames}
           showAccidentals={showAccidentals}
           showFingerings={showFingerings}
+          showChords={showChords}
+          chordNotation={chordNotation}
+          showTuplets={showTuplets}
           showLyrics={showLyrics}
           isLastInSystem={idx === system.measures.length - 1}
           selectedNoteId={selectedNoteId}
           onNoteClick={onNoteClick}
+          onChordClick={onChordClick}
         />
       ))}
     </g>
