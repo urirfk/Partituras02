@@ -11,7 +11,10 @@
   "dropzone": {
     "title": "Arrastra tu partitura aquí",
     "description": "Admite archivos PDF multipágina, imágenes escaneadas (PNG/JPG) o archivos MusicXML directos.",
-    "selectFile": "Seleccionar archivo"
+    "selectFile": "Seleccionar archivo",
+    "processing": "Procesando partitura...",
+    "omrRunning": "Reconociendo pentagramas y notas...",
+    "errorPrefix": "Error al procesar: "
   },
   "features": {
     "solfegeBadgeTitle": "Cabezas con Solfeo",

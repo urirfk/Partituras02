@@ -11,7 +11,10 @@
   "dropzone": {
     "title": "Drop your sheet music here",
     "description": "Supports multi-page PDFs, scanned images (PNG/JPG), or direct MusicXML files.",
-    "selectFile": "Select file"
+    "selectFile": "Select file",
+    "processing": "Processing sheet music...",
+    "omrRunning": "Detecting staves and notes...",
+    "errorPrefix": "Error processing: "
   },
   "features": {
     "solfegeBadgeTitle": "Solfege Noteheads",
