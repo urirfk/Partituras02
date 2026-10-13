@@ -19,7 +19,7 @@ class PitchSchema(BaseModel):
 
 
 class TupletInfoSchema(BaseModel):
-    count: int = Field(..., ge=2)
+    count: int = Field(..., ge=1)
     total: int = Field(..., ge=1)
 
 
