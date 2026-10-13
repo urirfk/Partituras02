@@ -42,5 +42,15 @@
     "onlyClean": "Didactic Only",
     "resetSplit": "Reset Split (50/50)",
     "dragHandleAria": "Adjust ratio between original sheet music and didactic sheet music"
+  },
+  "viewer": {
+    "zoomIn": "Zoom In",
+    "zoomOut": "Zoom Out",
+    "fitWidth": "Fit to Width",
+    "resetZoom": "Reset Zoom",
+    "page": "Page",
+    "of": "of",
+    "noDocument": "No document loaded.",
+    "originalTitle": "Scanned Original Document"
   }
 }

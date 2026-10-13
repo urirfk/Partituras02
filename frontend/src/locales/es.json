@@ -42,5 +42,15 @@
     "onlyClean": "Sólo Didáctico",
     "resetSplit": "Restablecer divisor (50/50)",
     "dragHandleAria": "Ajustar proporción entre partitura original y didáctica"
+  },
+  "viewer": {
+    "zoomIn": "Acercar",
+    "zoomOut": "Alejar",
+    "fitWidth": "Ajustar al ancho",
+    "resetZoom": "Restablecer zoom",
+    "page": "Página",
+    "of": "de",
+    "noDocument": "No hay ningún documento cargado.",
+    "originalTitle": "Documento Original Escaneado"
   }
 }
