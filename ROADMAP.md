@@ -51,8 +51,8 @@ Sistema de limpieza y reformatizado didáctico de partituras para piano y teclad
 
 ## 4. FASES MACRO DEL PROYECTO (NIVEL 1)
 
-- [>] **Fase 1: Arquitectura Base, Setup y Tooling** (EN CURSO -> `tasks/phase-01/`)
-- [ ] **Fase 2: Motor de Renderizado Didáctico SVG** (Pendiente)
+- [x] **Fase 1: Arquitectura Base, Setup y Tooling** (Completada -> `tasks/phase-01/`)
+- [>] **Fase 2: Motor de Renderizado Didáctico SVG** (EN CURSO -> `tasks/phase-02/`)
 - [ ] **Fase 3: Pipeline de Ingesta, Preprocesamiento de Imagen y Motor OMR** (Pendiente)
 - [ ] **Fase 4: Interfaz Split-Screen Zen, Editor Asistido y Controles Ortogonales** (Pendiente)
 - [ ] **Fase 5: Modos de Salida (Exportador PDF A4 Vectorial, MusicXML/MIDI, Proyecto Local y Modo Atril)** (Pendiente)

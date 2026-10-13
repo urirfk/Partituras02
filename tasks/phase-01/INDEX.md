@@ -7,7 +7,7 @@
 
 - [x] **1.1: Configuración de Entorno y Tooling Frontend/Backend** (-> `1.1-setup.md`)
 - [x] **1.2: Infraestructura i18n y Contratos de Tipos de Dominio Musical** (-> `1.2-types-i18n.md`)
-- [>] **1.3: Pipeline de Verificación Automatizada y Scripts Canónicos** (-> `1.3-validation.md`)
+- [x] **1.3: Pipeline de Verificación Automatizada y Scripts Canónicos** (-> `1.3-validation.md`)
 
 ---
 
