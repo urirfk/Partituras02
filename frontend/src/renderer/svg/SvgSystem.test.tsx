@@ -209,4 +209,71 @@ describe('SvgSystem Component', () => {
 
     expect(screen.queryByTestId('system-measure-number')).not.toBeInTheDocument()
   })
+
+  it('renders Grand Staff with accolade brace and both treble and bass staves', () => {
+    const measureGrand: Measure = {
+      number: 1,
+      chords: [],
+      notes: [
+        {
+          id: 'u1',
+          pitch: { step: 'C', octave: 5, accidental: 'natural', solfege: 'do', displayBadgeText: 'do' },
+          duration: 'quarter',
+          dots: 0,
+          isRest: false,
+        },
+      ],
+      lowerNotes: [
+        {
+          id: 'l1',
+          pitch: { step: 'C', octave: 3, accidental: 'natural', solfege: 'do', displayBadgeText: 'do' },
+          duration: 'quarter',
+          dots: 0,
+          isRest: false,
+        },
+      ],
+    }
+
+    const systems = partitionMeasuresIntoSystems([measureGrand], {
+      measuresPerSystem: 1,
+      systemWidth: 800,
+    })
+
+    render(
+      <svg>
+        <SvgSystem system={systems[0]} staffType="grand" />
+      </svg>,
+    )
+
+    // Accolade (GrandStaffBrace) is rendered
+    expect(screen.getByTestId('grand-staff-brace')).toBeInTheDocument()
+
+    // Both treble and bass clefs are rendered
+    expect(screen.getByTestId('clef-treble')).toBeInTheDocument()
+    expect(screen.getByTestId('clef-bass')).toBeInTheDocument()
+
+    // Continuous barline crossing both staves
+    const barline = screen.getByTestId('barline-1')
+    expect(barline).toBeInTheDocument()
+    expect(barline).toHaveAttribute('y1', '60')
+    expect(barline).toHaveAttribute('y2', '190') // 60 + 40 + 50 + 40 = 190
+  })
+
+  it('renders Single Staff by default without GrandStaffBrace and without bass clef', () => {
+    const systems = partitionMeasuresIntoSystems([measure34, measure35], {
+      measuresPerSystem: 2,
+      systemWidth: 800,
+    })
+
+    render(
+      <svg>
+        <SvgSystem system={systems[0]} staffType="single" />
+      </svg>,
+    )
+
+    expect(screen.queryByTestId('grand-staff-brace')).not.toBeInTheDocument()
+    expect(screen.getByTestId('clef-treble')).toBeInTheDocument()
+    expect(screen.queryByTestId('clef-bass')).not.toBeInTheDocument()
+  })
 })
+
