@@ -10,6 +10,10 @@ dependencies = [
     "pydantic>=2.8.0",
     "python-multipart>=0.0.9",
     "music21>=10.5.0",
+    "opencv-python-headless>=5.0.0.93",
+    "pypdf>=6.20.1",
+    "pillow>=12.3.0",
+    "pypdfium2>=5.14.0",
 ]
 
 [project.optional-dependencies]
