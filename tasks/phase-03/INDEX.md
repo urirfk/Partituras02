@@ -10,10 +10,10 @@ Esta fase implementa la ingesta de documentos musicales (PDFs mono y multipágin
 - [x] **3.1: Ingestor y Parser de Archivos Estructurados (MusicXML y MIDI) hacia Modelo de Dominio** (-> `3.1-structured-ingestion.md`)
 - [x] **3.2: Pipeline de Preprocesamiento de Imagen con OpenCV (Deskewing, Binarización Adaptativa y Normalización)** (-> `3.2-image-preprocessing.md`)
 - [x] **3.3: Motor de Inferencia OMR y Mapeo a Estructura Musical Canónica** (-> `3.3-omr-engine.md`)
-- [>] **3.4: Endpoints de Ingesta y Procesamiento FastAPI con Validación Multipágina** (-> `3.4-api-endpoints.md`)
+- [x] **3.4: Endpoints de Ingesta y Procesamiento FastAPI con Validación Multipágina** (-> `3.4-api-endpoints.md`)
 
 ---
 
 ## Registro de Transición de Fase
 - **Fase 2:** Completada al 100% (Motor de renderizado SVG con solfeo, Gran Pentagrama y capas didácticas).
-- **Fase 3:** Activada `[>]` en ROADMAP.md.
+- **Fase 3:** Completada al 100% (Ingestión MusicXML/MIDI, visión OpenCV, OMR Engine y Endpoints FastAPI). Listo para Fase 4.

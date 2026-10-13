@@ -53,8 +53,8 @@ Sistema de limpieza y reformatizado didáctico de partituras para piano y teclad
 
 - [x] **Fase 1: Arquitectura Base, Setup y Tooling** (Completada -> `tasks/phase-01/`)
 - [x] **Fase 2: Motor de Renderizado Didáctico SVG** (Completada -> `tasks/phase-02/`)
-- [>] **Fase 3: Pipeline de Ingesta, Preprocesamiento de Imagen y Motor OMR** (EN CURSO -> `tasks/phase-03/`)
-- [ ] **Fase 4: Interfaz Split-Screen Zen, Editor Asistido y Controles Ortogonales** (Pendiente)
+- [x] **Fase 3: Pipeline de Ingesta, Preprocesamiento de Imagen y Motor OMR** (Completada -> `tasks/phase-03/`)
+- [>] **Fase 4: Interfaz Split-Screen Zen, Editor Asistido y Controles Ortogonales** (EN CURSO -> `tasks/phase-04/`)
 - [ ] **Fase 5: Modos de Salida (Exportador PDF A4 Vectorial, MusicXML/MIDI, Proyecto Local y Modo Atril)** (Pendiente)
 - [ ] **Fase 6: Pruebas Integradas End-to-End, Refinamiento Visual y Despliegue** (Pendiente)
 
