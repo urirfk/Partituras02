@@ -30,9 +30,18 @@
     "accidentals": "Alteraciones explícitas",
     "fingerings": "Digitaciones",
     "chords": "Acordes superiores",
+    "chordNotation": "Cifrado",
+    "chordLatin": "Latino (Si♭7)",
+    "chordAmerican": "Americano (B♭7)",
     "lyrics": "Letra de canciones",
     "measuresPerSystem": "Compases por línea",
-    "scale": "Tamaño de pentagrama"
+    "scale": "Tamaño de pentagrama",
+    "scaleNormal": "Normal",
+    "scaleLarge": "Grande",
+    "scaleExtraLarge": "Muy Grande",
+    "transposition": "Transposición",
+    "semitones": "st",
+    "resetDefaults": "Restablecer valores predeterminados"
   },
   "splitScreen": {
     "original": "Original",

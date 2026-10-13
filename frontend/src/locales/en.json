@@ -30,9 +30,18 @@
     "accidentals": "Explicit accidentals",
     "fingerings": "Fingerings",
     "chords": "Top chords",
+    "chordNotation": "Chords",
+    "chordLatin": "Latin (Si♭7)",
+    "chordAmerican": "American (B♭7)",
     "lyrics": "Song lyrics",
     "measuresPerSystem": "Measures per system",
-    "scale": "Staff scale"
+    "scale": "Staff scale",
+    "scaleNormal": "Normal",
+    "scaleLarge": "Large",
+    "scaleExtraLarge": "Extra Large",
+    "transposition": "Transposition",
+    "semitones": "st",
+    "resetDefaults": "Reset to defaults"
   },
   "splitScreen": {
     "original": "Original",
