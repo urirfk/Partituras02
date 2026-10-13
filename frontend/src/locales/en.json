@@ -33,5 +33,14 @@
     "lyrics": "Song lyrics",
     "measuresPerSystem": "Measures per system",
     "scale": "Staff scale"
+  },
+  "splitScreen": {
+    "original": "Original",
+    "clean": "Didactic",
+    "split": "Split",
+    "onlyOriginal": "Original Only",
+    "onlyClean": "Didactic Only",
+    "resetSplit": "Reset Split (50/50)",
+    "dragHandleAria": "Adjust ratio between original sheet music and didactic sheet music"
   }
 }

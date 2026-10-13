@@ -33,5 +33,14 @@
     "lyrics": "Letra de canciones",
     "measuresPerSystem": "Compases por línea",
     "scale": "Tamaño de pentagrama"
+  },
+  "splitScreen": {
+    "original": "Original",
+    "clean": "Didáctico",
+    "split": "Dividido",
+    "onlyOriginal": "Sólo Original",
+    "onlyClean": "Sólo Didáctico",
+    "resetSplit": "Restablecer divisor (50/50)",
+    "dragHandleAria": "Ajustar proporción entre partitura original y didáctica"
   }
 }
