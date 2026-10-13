@@ -10,7 +10,7 @@ Esta fase implementa la experiencia de usuario completa: la interfaz Split-Scree
 - [x] **4.1: Interfaz Split-Screen Zen con Divisor Dinámico Ajustable y Vista Dual** (-> `4.1-split-screen.md`)
 - [x] **4.2: Panel de Controles Ortogonales Didácticos y Gestión de Invarianza de Estado** (-> `4.2-orthogonal-controls.md`)
 - [x] **4.3: Editor Asistido Popover por Clic en Nota y Sistema Undo/Redo** (-> `4.3-note-editor.md`)
-- [>] **4.4: Integración Drag-and-Drop de Carga y Conexión Frontend con API REST** (-> `4.4-ingestion-ui.md`)
+- [x] **4.4: Integración Drag-and-Drop de Carga y Conexión Frontend con API REST** (-> `4.4-ingestion-ui.md`)
 
 ---
 
