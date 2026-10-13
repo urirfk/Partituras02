@@ -1,0 +1,37 @@
+{
+  "app": {
+    "title": "Partituras02",
+    "subtitle": "Pedagogical EZ-Play Piano Edition"
+  },
+  "nav": {
+    "standMode": "Music Stand Mode",
+    "exportPdf": "Export A4 PDF",
+    "language": "Language"
+  },
+  "dropzone": {
+    "title": "Drop your sheet music here",
+    "description": "Supports multi-page PDFs, scanned images (PNG/JPG), or direct MusicXML files.",
+    "selectFile": "Select file"
+  },
+  "features": {
+    "solfegeBadgeTitle": "Solfege Noteheads",
+    "solfegeBadgeDesc": "Legible capsules with do, re, mi in white-on-black to eliminate visual fatigue.",
+    "measuresDensityTitle": "{{count}} Measures per System",
+    "measuresDensityDesc": "Wide anti-crowding horizontal spacing for relaxed piano sight-reading.",
+    "orthogonalControlsTitle": "Orthogonal Controls",
+    "orthogonalControlsDesc": "Solfege {{solfegeStatus}} • Accidentals {{accidentalsStatus}}.",
+    "statusActive": "Enabled",
+    "statusInactive": "Disabled",
+    "statusVisible": "Visible",
+    "statusStandard": "Standard"
+  },
+  "controls": {
+    "noteNames": "Note names",
+    "accidentals": "Explicit accidentals",
+    "fingerings": "Fingerings",
+    "chords": "Top chords",
+    "lyrics": "Song lyrics",
+    "measuresPerSystem": "Measures per system",
+    "scale": "Staff scale"
+  }
+}

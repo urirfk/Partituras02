@@ -1,0 +1,37 @@
+{
+  "app": {
+    "title": "Partituras02",
+    "subtitle": "Edición Didáctica EZ-Play para Piano"
+  },
+  "nav": {
+    "standMode": "Modo Atril",
+    "exportPdf": "Exportar PDF A4",
+    "language": "Idioma"
+  },
+  "dropzone": {
+    "title": "Arrastra tu partitura aquí",
+    "description": "Admite archivos PDF multipágina, imágenes escaneadas (PNG/JPG) o archivos MusicXML directos.",
+    "selectFile": "Seleccionar archivo"
+  },
+  "features": {
+    "solfegeBadgeTitle": "Cabezas con Solfeo",
+    "solfegeBadgeDesc": "Cápsulas legibles con do, re, mi en blanco sobre negro para eliminar fatiga visual.",
+    "measuresDensityTitle": "{{count}} Compases por Sistema",
+    "measuresDensityDesc": "Espaciado horizontal amplio anti-apelotonamiento para lectura fluida en piano.",
+    "orthogonalControlsTitle": "Controles Ortogonales",
+    "orthogonalControlsDesc": "Solfeo {{solfegeStatus}} • Alteraciones {{accidentalsStatus}}.",
+    "statusActive": "Activado",
+    "statusInactive": "Desactivado",
+    "statusVisible": "Visibles",
+    "statusStandard": "Estándar"
+  },
+  "controls": {
+    "noteNames": "Nombres en notas",
+    "accidentals": "Alteraciones explícitas",
+    "fingerings": "Digitaciones",
+    "chords": "Acordes superiores",
+    "lyrics": "Letra de canciones",
+    "measuresPerSystem": "Compases por línea",
+    "scale": "Tamaño de pentagrama"
+  }
+}

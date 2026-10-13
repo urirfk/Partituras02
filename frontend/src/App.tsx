@@ -1,10 +1,20 @@
 import React, { useState } from 'react'
-import { Music, FileUp, Sparkles, BookOpen, Printer, Sliders } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
+import { Music, FileUp, Sparkles, BookOpen, Printer, Sliders, Globe } from 'lucide-react'
 
 export const App: React.FC = () => {
+  const { t, i18n } = useTranslation()
   const [measuresPerSystem] = useState<number>(2)
   const [showNoteNames] = useState<boolean>(true)
   const [showAccidentals] = useState<boolean>(true)
+
+  const toggleLanguage = () => {
+    const nextLang = i18n.language === 'es' ? 'en' : 'es'
+    i18n.changeLanguage(nextLang)
+  }
+
+  const solfegeStatus = showNoteNames ? t('features.statusActive') : t('features.statusInactive')
+  const accidentalsStatus = showAccidentals ? t('features.statusVisible') : t('features.statusStandard')
 
   return (
     <div className="min-h-screen flex flex-col bg-[#fcfbf9] text-zinc-900 dark:bg-[#0c0c0e] dark:text-zinc-100 transition-colors">
@@ -15,25 +25,35 @@ export const App: React.FC = () => {
             <Music className="w-5 h-5" />
           </div>
           <div>
-            <h1 className="font-semibold text-base tracking-tight">Partituras02</h1>
-            <p className="text-xs text-zinc-500 dark:text-zinc-400">Edición Didáctica EZ-Play para Piano</p>
+            <h1 className="font-semibold text-base tracking-tight">{t('app.title')}</h1>
+            <p className="text-xs text-zinc-500 dark:text-zinc-400">{t('app.subtitle')}</p>
           </div>
         </div>
 
         <div className="flex items-center gap-2">
           <button
             type="button"
+            onClick={toggleLanguage}
+            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 transition"
+            title={t('nav.language')}
+          >
+            <Globe className="w-3.5 h-3.5" />
+            <span className="font-semibold">{i18n.language.substring(0, 2).toUpperCase()}</span>
+          </button>
+
+          <button
+            type="button"
             className="flex items-center gap-2 px-3.5 py-1.5 text-xs font-medium rounded-lg border border-zinc-300 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition"
           >
             <BookOpen className="w-3.5 h-3.5" />
-            Modo Atril
+            {t('nav.standMode')}
           </button>
           <button
             type="button"
             className="flex items-center gap-2 px-3.5 py-1.5 text-xs font-medium rounded-lg bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 hover:opacity-90 shadow-sm transition"
           >
             <Printer className="w-3.5 h-3.5" />
-            Exportar PDF A4
+            {t('nav.exportPdf')}
           </button>
         </div>
       </header>
@@ -45,13 +65,13 @@ export const App: React.FC = () => {
             <FileUp className="w-8 h-8" />
           </div>
 
-          <h2 className="text-xl font-medium tracking-tight mb-2">Arrastra tu partitura aquí</h2>
+          <h2 className="text-xl font-medium tracking-tight mb-2">{t('dropzone.title')}</h2>
           <p className="text-sm text-zinc-500 dark:text-zinc-400 max-w-md mb-6">
-            Admite archivos PDF multipágina, imágenes escaneadas (PNG/JPG) o archivos MusicXML directos.
+            {t('dropzone.description')}
           </p>
 
           <label className="cursor-pointer px-5 py-2.5 rounded-xl bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 text-sm font-medium hover:opacity-90 transition shadow-sm">
-            Seleccionar archivo
+            {t('dropzone.selectFile')}
             <input type="file" className="hidden" accept=".pdf,.png,.jpg,.jpeg,.xml,.musicxml" />
           </label>
         </div>
@@ -61,30 +81,30 @@ export const App: React.FC = () => {
           <div className="p-4 rounded-2xl border border-zinc-200/80 dark:border-zinc-800/80 bg-white/40 dark:bg-zinc-900/40">
             <div className="flex items-center gap-2 mb-1.5 text-zinc-900 dark:text-zinc-100 font-medium text-sm">
               <Sparkles className="w-4 h-4 text-amber-500" />
-              Cabezas con Solfeo
+              {t('features.solfegeBadgeTitle')}
             </div>
             <p className="text-xs text-zinc-500 dark:text-zinc-400">
-              Cápsulas legibles con <span className="font-mono font-medium">do, re, mi</span> en blanco sobre negro para eliminar fatiga visual.
+              {t('features.solfegeBadgeDesc')}
             </p>
           </div>
 
           <div className="p-4 rounded-2xl border border-zinc-200/80 dark:border-zinc-800/80 bg-white/40 dark:bg-zinc-900/40">
             <div className="flex items-center gap-2 mb-1.5 text-zinc-900 dark:text-zinc-100 font-medium text-sm">
               <Sliders className="w-4 h-4 text-emerald-500" />
-              {measuresPerSystem} Compases por Sistema
+              {t('features.measuresDensityTitle', { count: measuresPerSystem })}
             </div>
             <p className="text-xs text-zinc-500 dark:text-zinc-400">
-              Espaciado horizontal amplio anti-apelotonamiento para lectura fluida en piano.
+              {t('features.measuresDensityDesc')}
             </p>
           </div>
 
           <div className="p-4 rounded-2xl border border-zinc-200/80 dark:border-zinc-800/80 bg-white/40 dark:bg-zinc-900/40">
             <div className="flex items-center gap-2 mb-1.5 text-zinc-900 dark:text-zinc-100 font-medium text-sm">
               <BookOpen className="w-4 h-4 text-indigo-500" />
-              Controles Ortogonales
+              {t('features.orthogonalControlsTitle')}
             </div>
             <p className="text-xs text-zinc-500 dark:text-zinc-400">
-              Solfeo {showNoteNames ? 'Activado' : 'Desactivado'} • Alteraciones {showAccidentals ? 'Visibles' : 'Estándar'}.
+              {t('features.orthogonalControlsDesc', { solfegeStatus, accidentalsStatus })}
             </p>
           </div>
         </div>
