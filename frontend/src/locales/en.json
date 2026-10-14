@@ -80,5 +80,24 @@
     "lyrics": "Lyrics",
     "close": "Close",
     "measure": "Measure"
+  },
+  "exportModal": {
+    "title": "Export Score to A4 PDF",
+    "description": "Configure high-fidelity vector print settings.",
+    "documentTitle": "Score title",
+    "composer": "Composer / Arranger",
+    "orientation": "Page orientation",
+    "portrait": "Portrait (A4)",
+    "landscape": "Landscape (A4)",
+    "margins": "Margins",
+    "marginNarrow": "Narrow (10 mm)",
+    "marginNormal": "Normal (15 mm)",
+    "marginWide": "Wide (20 mm)",
+    "includeHeader": "Include editorial header",
+    "includePageNumbers": "Include page numbers",
+    "cancel": "Cancel",
+    "downloading": "Generating vector PDF...",
+    "download": "Download PDF",
+    "success": "PDF downloaded successfully!"
   }
 }

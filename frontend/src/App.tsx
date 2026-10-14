@@ -7,6 +7,7 @@ import { SplitScreenLayout } from './components/layout/SplitScreenLayout';
 import { DidacticScoreCanvas } from './components/score/DidacticScoreCanvas';
 import { ScoreDropzone } from './components/upload/ScoreDropzone';
 import { OriginalDocumentViewer } from './components/viewer/OriginalDocumentViewer';
+import { PdfExportModal } from './components/export/PdfExportModal';
 import { ScoreConfigProvider } from './context/ScoreConfigContext';
 import { ScoreHistoryProvider } from './context/ScoreHistoryContext';
 import { useScoreHistory } from './context/useScoreHistory';
@@ -25,6 +26,7 @@ const AppMain: React.FC = () => {
   const { score, setScore, undo, redo, canUndo, canRedo } = useScoreHistory();
   const [originalPages, setOriginalPages] = useState<string[]>([]);
   const [isUploadOpen, setIsUploadOpen] = useState<boolean>(false);
+  const [isPdfExportOpen, setIsPdfExportOpen] = useState<boolean>(false);
   const [activeNote, setActiveNote] = useState<ActiveNoteState | null>(null);
 
   const toggleLanguage = () => {
@@ -117,7 +119,9 @@ const AppMain: React.FC = () => {
           </button>
           <button
             type="button"
+            onClick={() => setIsPdfExportOpen(true)}
             className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 hover:opacity-90 shadow-xs transition"
+            data-testid="export-pdf-btn"
           >
             <Printer className="w-3.5 h-3.5" />
             <span className="hidden sm:inline">{t('nav.exportPdf')}</span>
@@ -184,6 +188,13 @@ const AppMain: React.FC = () => {
             onClose={() => setActiveNote(null)}
           />
         )}
+
+        {/* PDF Export Modal */}
+        <PdfExportModal
+          isOpen={isPdfExportOpen}
+          onClose={() => setIsPdfExportOpen(false)}
+          score={score}
+        />
       </div>
     </div>
   );

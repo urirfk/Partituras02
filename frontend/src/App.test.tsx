@@ -57,4 +57,18 @@ describe('App Component i18n and UI', () => {
     fireEvent.click(notes[0]);
     expect(screen.getByTestId('note-edit-popover')).toBeInTheDocument();
   });
+
+  it('opens and closes PdfExportModal when export button is clicked', () => {
+    render(<App />);
+    const exportBtn = screen.getByTestId('export-pdf-btn');
+    fireEvent.click(exportBtn);
+
+    expect(screen.getByRole('dialog')).toBeInTheDocument();
+    expect(screen.getByText(i18n.t('exportModal.title'))).toBeInTheDocument();
+
+    const cancelBtn = screen.getByText(i18n.t('exportModal.cancel'));
+    fireEvent.click(cancelBtn);
+
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+  });
 });

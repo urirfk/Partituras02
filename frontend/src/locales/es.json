@@ -80,5 +80,24 @@
     "lyrics": "Letra",
     "close": "Cerrar",
     "measure": "Compás"
+  },
+  "exportModal": {
+    "title": "Exportar Partitura a PDF A4",
+    "description": "Configura las opciones de impresión vectorial de alta fidelidad.",
+    "documentTitle": "Título de la obra",
+    "composer": "Compositor / Arreglista",
+    "orientation": "Orientación de página",
+    "portrait": "Vertical (A4)",
+    "landscape": "Horizontal (A4)",
+    "margins": "Márgenes",
+    "marginNarrow": "Estrecho (10 mm)",
+    "marginNormal": "Normal (15 mm)",
+    "marginWide": "Amplio (20 mm)",
+    "includeHeader": "Incluir cabecera editorial",
+    "includePageNumbers": "Numerar páginas",
+    "cancel": "Cancelar",
+    "downloading": "Generando PDF vectorial...",
+    "download": "Descargar PDF",
+    "success": "¡PDF descargado con éxito!"
   }
 }
