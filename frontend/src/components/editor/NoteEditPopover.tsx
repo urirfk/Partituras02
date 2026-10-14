@@ -65,6 +65,27 @@ export const NoteEditPopover: React.FC<NoteEditPopoverProps> = ({
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         onClose();
+        return;
+      }
+      if (e.key === 'Tab' && popoverRef.current) {
+        const focusableElements = popoverRef.current.querySelectorAll<HTMLElement>(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+        if (focusableElements.length === 0) return;
+        const firstEl = focusableElements[0];
+        const lastEl = focusableElements[focusableElements.length - 1];
+
+        if (e.shiftKey) {
+          if (document.activeElement === firstEl) {
+            e.preventDefault();
+            lastEl.focus();
+          }
+        } else {
+          if (document.activeElement === lastEl) {
+            e.preventDefault();
+            firstEl.focus();
+          }
+        }
       }
     };
 
@@ -144,6 +165,9 @@ export const NoteEditPopover: React.FC<NoteEditPopoverProps> = ({
   return (
     <div
       ref={popoverRef}
+      role="dialog"
+      aria-modal="true"
+      aria-label={t('editor.editNote')}
       style={{ left: `${leftPos}px`, top: `${topPos}px` }}
       className={`fixed z-50 w-72 rounded-xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-2xl p-3 text-xs text-zinc-700 dark:text-zinc-200 backdrop-blur-md select-none animate-in fade-in zoom-in-95 duration-100 ${className}`}
       data-testid="note-edit-popover"

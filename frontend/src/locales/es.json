@@ -45,7 +45,8 @@
     "scaleExtraLarge": "Muy Grande",
     "transposition": "Transposición",
     "semitones": "st",
-    "resetDefaults": "Restablecer valores predeterminados"
+    "resetDefaults": "Restablecer valores predeterminados",
+    "toolbarAria": "Barra de controles didácticos"
   },
   "splitScreen": {
     "original": "Original",

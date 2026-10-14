@@ -35,13 +35,19 @@ export const OrthogonalControlsBar: React.FC<OrthogonalControlsBarProps> = ({
 
   return (
     <div
+      role="toolbar"
+      aria-label={t('controls.toolbarAria')}
       className={`flex flex-wrap items-center justify-between gap-2 px-3 py-2 bg-white dark:bg-zinc-900 border-b border-zinc-200 dark:border-zinc-800 text-xs text-zinc-700 dark:text-zinc-200 select-none ${className}`}
       data-testid="orthogonal-controls-bar"
     >
       {/* Left section: Density & Didactic Toggles */}
       <div className="flex flex-wrap items-center gap-2">
         {/* Measures per System Segmented Control */}
-        <div className="flex items-center gap-1 bg-zinc-100 dark:bg-zinc-800/80 p-0.5 rounded-lg">
+        <div
+          role="radiogroup"
+          aria-label={t('controls.measuresPerSystem')}
+          className="flex items-center gap-1 bg-zinc-100 dark:bg-zinc-800/80 p-0.5 rounded-lg"
+        >
           <span className="px-1.5 text-[11px] font-medium text-zinc-500 dark:text-zinc-400">
             {t('controls.measuresPerSystem')}:
           </span>
@@ -49,6 +55,8 @@ export const OrthogonalControlsBar: React.FC<OrthogonalControlsBarProps> = ({
             <button
               key={count}
               type="button"
+              role="radio"
+              aria-checked={config.measuresPerSystem === count}
               onClick={() => setMeasuresPerSystem(count)}
               className={`px-2 py-0.5 text-xs font-semibold rounded-md transition-all ${
                 config.measuresPerSystem === count
@@ -67,6 +75,7 @@ export const OrthogonalControlsBar: React.FC<OrthogonalControlsBarProps> = ({
         {/* Note names (Solfege badge) toggle */}
         <button
           type="button"
+          aria-pressed={config.showNoteNames}
           onClick={toggleNoteNames}
           className={`flex items-center gap-1 px-2.5 py-1 rounded-md text-xs font-medium transition-all ${
             config.showNoteNames
@@ -83,6 +92,7 @@ export const OrthogonalControlsBar: React.FC<OrthogonalControlsBarProps> = ({
         {/* Accidentals toggle */}
         <button
           type="button"
+          aria-pressed={config.showAccidentals}
           onClick={toggleAccidentals}
           className={`flex items-center gap-1 px-2.5 py-1 rounded-md text-xs font-medium transition-all ${
             config.showAccidentals
@@ -99,6 +109,7 @@ export const OrthogonalControlsBar: React.FC<OrthogonalControlsBarProps> = ({
         {/* Fingerings toggle */}
         <button
           type="button"
+          aria-pressed={config.showFingerings}
           onClick={toggleFingerings}
           className={`flex items-center gap-1 px-2.5 py-1 rounded-md text-xs font-medium transition-all ${
             config.showFingerings
@@ -116,6 +127,7 @@ export const OrthogonalControlsBar: React.FC<OrthogonalControlsBarProps> = ({
         <div className="flex items-center gap-0.5 bg-zinc-100 dark:bg-zinc-800/80 p-0.5 rounded-lg">
           <button
             type="button"
+            aria-pressed={config.showChords}
             onClick={toggleChords}
             className={`px-2 py-0.5 rounded-md text-xs font-medium transition-all ${
               config.showChords
@@ -143,6 +155,7 @@ export const OrthogonalControlsBar: React.FC<OrthogonalControlsBarProps> = ({
         {/* Lyrics toggle */}
         <button
           type="button"
+          aria-pressed={config.showLyrics}
           onClick={toggleLyrics}
           className={`flex items-center gap-1 px-2.5 py-1 rounded-md text-xs font-medium transition-all ${
             config.showLyrics
