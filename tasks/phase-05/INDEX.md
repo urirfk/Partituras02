@@ -9,7 +9,7 @@ Esta fase implementa la suite completa de exportación y presentación final de 
 
 - [x] **5.1: Exportador PDF Vectorial A4 1:1 y Diálogo de Descarga** (-> `5.1-pdf-export.md`)
 - [x] **5.2: Exportadores Estructurados (MusicXML, MIDI y Proyecto Local .partitura)** (-> `5.2-structured-export.md`)
-- [>] **5.3: Modo Atril Zen a Pantalla Completa con Soporte de Pedal y Gestos** (-> `5.3-stand-mode.md`)
+- [x] **5.3: Modo Atril Zen a Pantalla Completa con Soporte de Pedal y Gestos** (-> `5.3-stand-mode.md`)
 
 ---
 
