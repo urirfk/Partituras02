@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest'
-import {
-  DEFAULT_SCORE_CONFIG,
+import { DEFAULT_SCORE_CONFIG } from './scoreConfig'
+import type {
   ScoreDisplayConfig,
   MeasuresPerSystem,
   StaffScale,

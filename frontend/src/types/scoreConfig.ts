@@ -16,6 +16,8 @@ export interface ScoreDisplayConfig {
   chordNotation: ChordNotation
 }
 
+export type ScoreConfig = ScoreDisplayConfig;
+
 export const DEFAULT_SCORE_CONFIG: ScoreDisplayConfig = {
   measuresPerSystem: 2,
   showNoteNames: true,
