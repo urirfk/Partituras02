@@ -7,8 +7,8 @@ Esta fase consolida y valida el sistema completo mediante pruebas de integració
 
 ## Módulos de Trabajo
 
-- [>] **6.1: Suite de Integración End-to-End y Pruebas de Invarianza Ortogonal** (-> `6.1-e2e-testing.md`)
-- [ ] **6.2: Refinamiento Visual Zen, Accesibilidad y Adaptabilidad Responsive** (-> `6.2-visual-refinement.md`)
+- [x] **6.1: Suite de Integración End-to-End y Pruebas de Invarianza Ortogonal** (-> `6.1-e2e-testing.md`)
+- [>] **6.2: Refinamiento Visual Zen, Accesibilidad y Adaptabilidad Responsive** (-> `6.2-visual-refinement.md`)
 - [ ] **6.3: Verificación Canónica de Producción, Build Final y Documentación de Despliegue** (-> `6.3-production-deployment.md`)
 
 ---
