@@ -66,6 +66,9 @@ def test_process_omr_image_endpoint():
     assert score["metadata"]["title"] == "Minuet"
     assert score["metadata"]["composer"] == "Bach"
     assert len(score["measures"]) >= 1
+    assert "pages" in score
+    assert len(score["pages"]) == 1
+    assert score["pages"][0].startswith("data:image/")
 
 
 def test_process_omr_pdf_endpoint():
@@ -76,6 +79,9 @@ def test_process_omr_pdf_endpoint():
     score = response.json()
     assert score["metadata"]["title"] == "sheet"
     assert len(score["measures"]) >= 1
+    assert "pages" in score
+    assert len(score["pages"]) == 1
+    assert score["pages"][0].startswith("data:image/png;base64,")
 
 
 def test_process_omr_empty_file():

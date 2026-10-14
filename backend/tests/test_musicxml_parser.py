@@ -189,3 +189,14 @@ def test_parse_grand_staff_musicxml():
     assert m1.lower_notes[1].pitch is not None
     assert m1.lower_notes[1].pitch.step == "G"
     assert m1.lower_notes[1].pitch.solfege == "sol"
+
+
+def test_parse_empty_musicxml_fallback():
+    empty_xml = """<?xml version="1.0" encoding="UTF-8"?>
+    <score-partwise version="3.1">
+      <part-list><score-part id="P1"><part-name>P1</part-name></score-part></part-list>
+      <part id="P1"></part>
+    </score-partwise>"""
+    score = parse_musicxml_content(empty_xml)
+    assert len(score.measures) == 1
+    assert score.measures[0].notes[0].is_rest is True

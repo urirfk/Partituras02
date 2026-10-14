@@ -1,3 +1,4 @@
+import base64
 import uuid
 from typing import Optional
 
@@ -109,6 +110,10 @@ async def process_omr(
                 title=effective_title,
                 composer=effective_composer,
             )
+            score.pages = [
+                f"data:image/png;base64,{base64.b64encode(p[0]).decode('ascii')}"
+                for p in rendered_pages
+            ]
         else:
             score = process_omr_image(
                 content,
@@ -117,6 +122,12 @@ async def process_omr(
                 do_deskew=do_deskew,
                 run_harmonics=run_harmonics,
             )
+            content_type = file.content_type or "image/png"
+            if not content_type.startswith("image/"):
+                content_type = "image/png"
+            score.pages = [
+                f"data:{content_type};base64,{base64.b64encode(content).decode('ascii')}"
+            ]
         return score
     except Exception as exc:
         raise HTTPException(

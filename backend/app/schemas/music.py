@@ -77,3 +77,4 @@ class ScoreSchema(BaseModel):
     metadata: ScoreMetadataSchema
     staff_type: StaffType = "single"
     measures: List[MeasureSchema] = Field(default_factory=list)
+    pages: List[str] = Field(default_factory=list)

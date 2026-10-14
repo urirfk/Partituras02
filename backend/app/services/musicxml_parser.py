@@ -7,6 +7,7 @@ from app.schemas.music import (
     ChordSymbolSchema,
     KeySignatureSchema,
     MeasureSchema,
+    NoteSchema,
     ScoreMetadataSchema,
     ScoreSchema,
     StaffType,
@@ -157,14 +158,42 @@ def parse_musicxml_content(content: str | bytes) -> ScoreSchema:
     sorted_measures: List[MeasureSchema] = []
     for m_num in sorted(measures_dict.keys()):
         data = measures_dict[m_num]
+        measure_notes = data["notes"]
+        if not measure_notes:
+            measure_notes = [
+                NoteSchema(id=f"m{m_num}-rest", is_rest=True, duration="whole", dots=0)
+            ]
+        lower_notes = data["lower_notes"]
+        if lower_notes is not None and len(lower_notes) == 0:
+            lower_notes = [
+                NoteSchema(id=f"m{m_num}-lh-rest", is_rest=True, duration="whole", dots=0)
+            ]
+
         sorted_measures.append(
             MeasureSchema(
                 number=data["number"],
                 time_signature=data["time_sig"],
                 key_signature=data["key_sig"],
                 chords=data["chords"],
-                notes=data["notes"],
-                lower_notes=data["lower_notes"],
+                notes=measure_notes,
+                lower_notes=lower_notes,
+            )
+        )
+
+    if not sorted_measures:
+        time_sig = TimeSignatureSchema(beats=4, beat_type=4)
+        key_sig = KeySignatureSchema(fifths=0, mode="major", name="Do Mayor")
+        sorted_measures.append(
+            MeasureSchema(
+                number=1,
+                time_signature=time_sig,
+                key_signature=key_sig,
+                notes=[NoteSchema(id="m1-rest", is_rest=True, duration="whole", dots=0)],
+                lower_notes=(
+                    [NoteSchema(id="m1-lh-rest", is_rest=True, duration="whole", dots=0)]
+                    if staff_type == "grand"
+                    else None
+                ),
             )
         )
 

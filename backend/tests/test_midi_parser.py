@@ -92,3 +92,14 @@ def test_parse_two_track_midi_grand_staff():
     assert m1.lower_notes[0].pitch is not None
     assert m1.lower_notes[0].pitch.step == "C"
     assert m1.lower_notes[0].pitch.octave == 3
+
+
+def test_parse_empty_midi_fallback():
+    score = music21.stream.Score()
+    part = music21.stream.Part()
+    score.append(part)
+    mf = music21.midi.translate.music21ObjectToMidiFile(score)
+    midi_bytes = bytes(mf.writestr())
+    parsed = parse_midi_bytes(midi_bytes)
+    assert len(parsed.measures) == 1
+    assert parsed.measures[0].notes[0].is_rest is True
