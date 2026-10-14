@@ -1,4 +1,4 @@
-import { BookOpen, Globe, Music, Printer, Redo2, Undo2, Upload } from 'lucide-react';
+import { BookOpen, Globe, Moon, Music, Printer, Redo2, Sun, Undo2, Upload } from 'lucide-react';
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { OrthogonalControlsBar } from './components/controls/OrthogonalControlsBar';
@@ -13,6 +13,8 @@ import { MusicStandMode } from './components/stand/MusicStandMode';
 import { ScoreConfigProvider } from './context/ScoreConfigContext';
 import { ScoreHistoryProvider } from './context/ScoreHistoryContext';
 import { useScoreHistory } from './context/useScoreHistory';
+import { ThemeProvider } from './context/ThemeContext';
+import { useTheme } from './context/useTheme';
 import { INITIAL_SCORE } from './data/initialScore';
 import { Note, Score } from './types/music';
 
@@ -25,6 +27,7 @@ interface ActiveNoteState {
 
 const AppMain: React.FC = () => {
   const { t, i18n } = useTranslation();
+  const { theme, toggleTheme } = useTheme();
   const { score, setScore, undo, redo, canUndo, canRedo } = useScoreHistory();
   const [originalPages, setOriginalPages] = useState<string[]>([]);
   const [isUploadOpen, setIsUploadOpen] = useState<boolean>(false);
@@ -149,6 +152,22 @@ const AppMain: React.FC = () => {
             <span>{i18n.language.substring(0, 2).toUpperCase()}</span>
           </button>
 
+          {/* Theme Toggle (Light / Dark) */}
+          <button
+            type="button"
+            onClick={toggleTheme}
+            className="p-1.5 rounded-lg border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 transition"
+            title={t('nav.theme')}
+            aria-label={t('nav.theme')}
+            data-testid="theme-toggle-btn"
+          >
+            {theme === 'dark' ? (
+              <Sun className="w-3.5 h-3.5 text-amber-400" />
+            ) : (
+              <Moon className="w-3.5 h-3.5 text-zinc-600" />
+            )}
+          </button>
+
           {/* Stand Mode & Structured Export / PDF */}
           <button
             type="button"
@@ -270,11 +289,13 @@ const AppMain: React.FC = () => {
 
 export const App: React.FC = () => {
   return (
-    <ScoreConfigProvider>
-      <ScoreHistoryProvider initialScore={INITIAL_SCORE}>
-        <AppMain />
-      </ScoreHistoryProvider>
-    </ScoreConfigProvider>
+    <ThemeProvider>
+      <ScoreConfigProvider>
+        <ScoreHistoryProvider initialScore={INITIAL_SCORE}>
+          <AppMain />
+        </ScoreHistoryProvider>
+      </ScoreConfigProvider>
+    </ThemeProvider>
   );
 };
 

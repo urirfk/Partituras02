@@ -6,7 +6,8 @@
   "nav": {
     "standMode": "Modo Atril",
     "exportPdf": "Exportar PDF A4",
-    "language": "Idioma"
+    "language": "Idioma",
+    "theme": "Alternar modo Claro / Oscuro"
   },
   "dropzone": {
     "title": "Arrastra tu partitura aquí",

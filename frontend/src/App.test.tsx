@@ -107,4 +107,23 @@ describe('App Component i18n and UI', () => {
     fireEvent.keyDown(window, { key: 'Escape' });
     expect(screen.queryByTestId('music-stand-mode')).not.toBeInTheDocument();
   });
+
+  it('toggles dark mode when theme button is clicked and updates document class', () => {
+    document.documentElement.className = '';
+    window.localStorage.clear();
+
+    render(<App />);
+    const themeBtn = screen.getByTestId('theme-toggle-btn');
+    expect(document.documentElement.classList.contains('dark')).toBe(false);
+
+    // Toggle to Dark
+    fireEvent.click(themeBtn);
+    expect(document.documentElement.classList.contains('dark')).toBe(true);
+    expect(window.localStorage.getItem('partituras02-theme')).toBe('dark');
+
+    // Toggle to Light
+    fireEvent.click(themeBtn);
+    expect(document.documentElement.classList.contains('dark')).toBe(false);
+    expect(window.localStorage.getItem('partituras02-theme')).toBe('light');
+  });
 });

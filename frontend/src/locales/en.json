@@ -6,7 +6,8 @@
   "nav": {
     "standMode": "Music Stand Mode",
     "exportPdf": "Export A4 PDF",
-    "language": "Language"
+    "language": "Language",
+    "theme": "Toggle Light / Dark Mode"
   },
   "dropzone": {
     "title": "Drop your sheet music here",
