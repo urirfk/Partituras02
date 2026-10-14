@@ -104,3 +104,90 @@ export function mapScoreFromBackend(raw: any): Score {
     measures: Array.isArray(raw.measures) ? raw.measures.map(mapMeasureFromBackend) : [],
   };
 }
+
+export function mapScoreToBackend(score: Score): Record<string, unknown> {
+  return {
+    id: score.id,
+    metadata: {
+      title: score.metadata.title,
+      composer: score.metadata.composer,
+      subtitle: score.metadata.subtitle,
+      arranger: score.metadata.arranger,
+      tempo_bpm: score.metadata.tempo?.bpm,
+      tempo_text: score.metadata.tempo?.text,
+    },
+    staff_type: score.staffType,
+    measures: score.measures.map((m) => ({
+      number: m.number,
+      time_signature: m.timeSignature
+        ? {
+            beats: m.timeSignature.beats,
+            beat_type: m.timeSignature.beatType,
+          }
+        : undefined,
+      key_signature: m.keySignature
+        ? {
+            fifths: m.keySignature.fifths,
+            mode: m.keySignature.mode,
+            name: m.keySignature.name,
+          }
+        : undefined,
+      chords:
+        m.chords?.map((c) => ({
+          id: c.id,
+          root: c.root,
+          quality: c.quality,
+          full_text: c.fullText,
+          beat: c.beat,
+        })) || [],
+      notes: m.notes.map((n) => ({
+        id: n.id,
+        pitch: n.pitch
+          ? {
+              step: n.pitch.step,
+              octave: n.pitch.octave,
+              accidental: n.pitch.accidental,
+              solfege: n.pitch.solfege,
+              display_badge_text: n.pitch.displayBadgeText,
+            }
+          : undefined,
+        is_rest: Boolean(n.isRest),
+        duration: n.duration,
+        dots: n.dots || 0,
+        fingering: n.fingering,
+        lyrics: n.lyrics,
+        tuplet: n.tuplet
+          ? {
+              count: n.tuplet.count,
+              total: n.tuplet.total,
+            }
+          : undefined,
+        tie: n.tie,
+      })),
+      lower_notes: m.lowerNotes?.map((n) => ({
+        id: n.id,
+        pitch: n.pitch
+          ? {
+              step: n.pitch.step,
+              octave: n.pitch.octave,
+              accidental: n.pitch.accidental,
+              solfege: n.pitch.solfege,
+              display_badge_text: n.pitch.displayBadgeText,
+            }
+          : undefined,
+        is_rest: Boolean(n.isRest),
+        duration: n.duration,
+        dots: n.dots || 0,
+        fingering: n.fingering,
+        lyrics: n.lyrics,
+        tuplet: n.tuplet
+          ? {
+              count: n.tuplet.count,
+              total: n.tuplet.total,
+            }
+          : undefined,
+        tie: n.tie,
+      })),
+    })),
+  };
+}
