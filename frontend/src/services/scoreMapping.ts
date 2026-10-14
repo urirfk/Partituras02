@@ -102,6 +102,7 @@ export function mapScoreFromBackend(raw: any): Score {
     },
     staffType,
     measures: Array.isArray(raw.measures) ? raw.measures.map(mapMeasureFromBackend) : [],
+    pages: Array.isArray(raw.pages) ? raw.pages : undefined,
   };
 }
 
@@ -117,6 +118,7 @@ export function mapScoreToBackend(score: Score): Record<string, unknown> {
       tempo_text: score.metadata.tempo?.text,
     },
     staff_type: score.staffType,
+    pages: score.pages || [],
     measures: score.measures.map((m) => ({
       number: m.number,
       time_signature: m.timeSignature

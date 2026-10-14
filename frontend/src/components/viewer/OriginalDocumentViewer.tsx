@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 
 export interface OriginalDocumentViewerProps {
   pages: string[];
+  documentTitle?: string;
   currentPage?: number;
   onPageChange?: (page: number) => void;
   className?: string;
@@ -10,6 +11,7 @@ export interface OriginalDocumentViewerProps {
 
 export const OriginalDocumentViewer: React.FC<OriginalDocumentViewerProps> = ({
   pages,
+  documentTitle,
   currentPage = 1,
   onPageChange,
   className = '',
@@ -18,6 +20,7 @@ export const OriginalDocumentViewer: React.FC<OriginalDocumentViewerProps> = ({
   const [internalPage, setInternalPage] = useState<number>(currentPage);
   const [zoom, setZoom] = useState<number>(1.0);
   const [fitToWidth, setFitToWidth] = useState<boolean>(true);
+  const [pdfFallbackUrls, setPdfFallbackUrls] = useState<Record<string, boolean>>({});
 
   const activePage = onPageChange ? currentPage : internalPage;
   const totalPages = pages.length;
@@ -89,8 +92,11 @@ export const OriginalDocumentViewer: React.FC<OriginalDocumentViewerProps> = ({
             </>
           )}
           {totalPages <= 1 && (
-            <span className="font-medium text-zinc-500 dark:text-zinc-400">
-              {t('viewer.originalTitle')}
+            <span
+              className="font-medium text-zinc-500 dark:text-zinc-400 truncate max-w-[200px]"
+              title={documentTitle || t('viewer.originalTitle')}
+            >
+              {documentTitle || t('viewer.originalTitle')}
             </span>
           )}
         </div>
@@ -145,22 +151,58 @@ export const OriginalDocumentViewer: React.FC<OriginalDocumentViewerProps> = ({
       {/* Main Image Viewport */}
       <div className="flex-1 overflow-auto p-4 flex items-center justify-center">
         {currentImageSrc ? (
-          <div
-            className="transition-transform duration-100 flex items-center justify-center shadow-lg rounded-sm overflow-hidden bg-white"
-            style={
-              fitToWidth
-                ? { width: '100%', maxWidth: '100%' }
-                : { width: `${Math.round(zoom * 100)}%`, maxWidth: 'none' }
+          (() => {
+            const isDirectPdf =
+              typeof currentImageSrc === 'string' &&
+              (currentImageSrc.includes('application/pdf') ||
+                currentImageSrc.toLowerCase().endsWith('.pdf') ||
+                currentImageSrc.startsWith('data:application/pdf'));
+            const isPdf = isDirectPdf || Boolean(pdfFallbackUrls[currentImageSrc]);
+
+            if (isPdf) {
+              return (
+                <div
+                  className="w-full h-full flex items-center justify-center p-1"
+                  data-testid="pdf-wrapper"
+                >
+                  <object
+                    data={currentImageSrc}
+                    type="application/pdf"
+                    className="w-full h-full min-h-[500px] rounded-sm shadow-md"
+                    data-testid="original-score-pdf"
+                  >
+                    <iframe
+                      src={currentImageSrc}
+                      title={documentTitle || t('viewer.originalTitle')}
+                      className="w-full h-full border-0 min-h-[500px]"
+                    />
+                  </object>
+                </div>
+              );
             }
-            data-testid="image-wrapper"
-          >
-            <img
-              src={currentImageSrc}
-              alt={`${t('viewer.originalTitle')} - ${t('viewer.page')} ${activePage}`}
-              className="w-full h-auto object-contain pointer-events-none"
-              data-testid="original-score-image"
-            />
-          </div>
+
+            return (
+              <div
+                className="transition-transform duration-100 flex items-center justify-center shadow-lg rounded-sm overflow-hidden bg-white"
+                style={
+                  fitToWidth
+                    ? { width: '100%', maxWidth: '100%' }
+                    : { width: `${Math.round(zoom * 100)}%`, maxWidth: 'none' }
+                }
+                data-testid="image-wrapper"
+              >
+                <img
+                  src={currentImageSrc}
+                  alt={`${documentTitle || t('viewer.originalTitle')} - ${t('viewer.page')} ${activePage}`}
+                  className="w-full h-auto object-contain pointer-events-none"
+                  data-testid="original-score-image"
+                  onError={() => {
+                    setPdfFallbackUrls((prev) => ({ ...prev, [currentImageSrc]: true }));
+                  }}
+                />
+              </div>
+            );
+          })()
         ) : (
           <div
             className="text-center text-sm text-zinc-400 dark:text-zinc-500 py-12"

@@ -65,4 +65,20 @@ describe('OriginalDocumentViewer', () => {
     fireEvent.click(fitWidthBtn);
     expect(zoomPercentBtn).toHaveTextContent('Auto');
   });
+
+  it('renders PDF documents in native PDF object/iframe container', () => {
+    render(<OriginalDocumentViewer pages={['blob:http://localhost/score.pdf']} documentTitle="Mi Partitura" />);
+
+    expect(screen.getByTestId('original-score-pdf')).toBeInTheDocument();
+    expect(screen.getByText('Mi Partitura')).toBeInTheDocument();
+  });
+
+  it('falls back to PDF object when image fails to load via onError', () => {
+    render(<OriginalDocumentViewer pages={['blob:http://localhost/unknown-blob']} />);
+
+    const img = screen.getByTestId('original-score-image');
+    fireEvent.error(img);
+
+    expect(screen.getByTestId('original-score-pdf')).toBeInTheDocument();
+  });
 });

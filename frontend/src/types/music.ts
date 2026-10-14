@@ -79,4 +79,5 @@ export interface Score {
   metadata: ScoreMetadata
   staffType: StaffType
   measures: Measure[]
+  pages?: string[]
 }

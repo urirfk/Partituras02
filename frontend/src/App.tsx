@@ -79,8 +79,9 @@ const AppMain: React.FC = () => {
 
   const handleScoreLoaded = (loadedScore: Score, pages: string[]) => {
     setScore(loadedScore);
-    if (pages.length > 0) {
-      setOriginalPages(pages);
+    const resolvedPages = pages.length > 0 ? pages : (loadedScore.pages || []);
+    if (resolvedPages.length > 0) {
+      setOriginalPages(resolvedPages);
     }
     setIsUploadOpen(false);
   };
@@ -211,6 +212,7 @@ const AppMain: React.FC = () => {
           originalPanel={
             <OriginalDocumentViewer
               pages={originalPages}
+              documentTitle={score.metadata.title}
               className="h-full"
             />
           }

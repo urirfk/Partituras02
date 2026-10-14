@@ -57,6 +57,9 @@
     "resetSplit": "Reset Split (50/50)",
     "dragHandleAria": "Adjust ratio between original sheet music and didactic sheet music"
   },
+  "canvas": {
+    "noMeasures": "No measures found to display."
+  },
   "viewer": {
     "zoomIn": "Zoom In",
     "zoomOut": "Zoom Out",

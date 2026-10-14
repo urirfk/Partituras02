@@ -57,6 +57,9 @@
     "resetSplit": "Restablecer divisor (50/50)",
     "dragHandleAria": "Ajustar proporción entre partitura original y didáctica"
   },
+  "canvas": {
+    "noMeasures": "No se encontraron compases para mostrar."
+  },
   "viewer": {
     "zoomIn": "Acercar",
     "zoomOut": "Alejar",

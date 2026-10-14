@@ -19,6 +19,7 @@ export const ScoreDropzone: React.FC<ScoreDropzoneProps> = ({
   const [isDragOver, setIsDragOver] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [loadingText, setLoadingText] = useState<string>('');
+  const [processingFilename, setProcessingFilename] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -35,6 +36,7 @@ export const ScoreDropzone: React.FC<ScoreDropzoneProps> = ({
   const processFile = async (file: File) => {
     setIsLoading(true);
     setErrorMessage(null);
+    setProcessingFilename(file.name);
     setLoadingText(t('dropzone.processing'));
 
     try {
@@ -49,9 +51,13 @@ export const ScoreDropzone: React.FC<ScoreDropzoneProps> = ({
       } else {
         // PDF or Image file
         setLoadingText(t('dropzone.omrRunning'));
-        const fileUrl = URL.createObjectURL(file);
-        pages.push(fileUrl);
         score = await client.processOmr(file);
+        if (score.pages && score.pages.length > 0) {
+          pages.push(...score.pages);
+        } else {
+          const fileUrl = URL.createObjectURL(file);
+          pages.push(fileUrl);
+        }
       }
 
       onScoreLoaded(score, pages);
@@ -61,6 +67,7 @@ export const ScoreDropzone: React.FC<ScoreDropzoneProps> = ({
     } finally {
       setIsLoading(false);
       setLoadingText('');
+      setProcessingFilename(null);
       if (fileInputRef.current) {
         fileInputRef.current.value = '';
       }
@@ -122,8 +129,18 @@ export const ScoreDropzone: React.FC<ScoreDropzoneProps> = ({
       )}
 
       {isLoading ? (
-        <div className="flex items-center gap-2 text-sm font-medium text-zinc-600 dark:text-zinc-400">
-          <span data-testid="dropzone-loading-text">{loadingText}</span>
+        <div className="flex flex-col items-center gap-2">
+          {processingFilename && (
+            <span
+              className="text-xs font-semibold px-3 py-1 rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 max-w-xs truncate"
+              data-testid="dropzone-processing-filename"
+            >
+              📄 {processingFilename}
+            </span>
+          )}
+          <div className="flex items-center gap-2 text-sm font-medium text-zinc-600 dark:text-zinc-400">
+            <span data-testid="dropzone-loading-text">{loadingText}</span>
+          </div>
         </div>
       ) : (
         <label className="cursor-pointer px-5 py-2.5 rounded-xl bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 text-sm font-medium hover:opacity-90 transition shadow-sm">

@@ -86,4 +86,28 @@ describe('ScoreDropzone', () => {
       expect(screen.getByTestId('dropzone-error')).toHaveTextContent('Archivo corrupto');
     });
   });
+
+  it('processes OMR PDF file and propagates score.pages', async () => {
+    const scoreWithPages: Score = {
+      ...dummyScore,
+      pages: ['data:image/png;base64,pageOne', 'data:image/png;base64,pageTwo'],
+    };
+    mockClient.processOmr = vi.fn().mockResolvedValue(scoreWithPages);
+
+    const handleLoaded = vi.fn();
+    render(<ScoreDropzone onScoreLoaded={handleLoaded} client={mockClient} />);
+
+    const file = new File(['%PDF-1.4'], 'prelude.pdf', { type: 'application/pdf' });
+    const input = screen.getByTestId('dropzone-file-input');
+
+    fireEvent.change(input, { target: { files: [file] } });
+
+    await waitFor(() => {
+      expect(mockClient.processOmr).toHaveBeenCalledWith(file);
+      expect(handleLoaded).toHaveBeenCalledWith(scoreWithPages, [
+        'data:image/png;base64,pageOne',
+        'data:image/png;base64,pageTwo',
+      ]);
+    });
+  });
 });

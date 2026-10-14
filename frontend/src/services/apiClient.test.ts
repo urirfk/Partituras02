@@ -53,6 +53,7 @@ describe('scoreMapping', () => {
           ],
         },
       ],
+      pages: ['data:image/png;base64,mockPage1'],
     };
 
     const mapped = mapScoreFromBackend(backendData);
@@ -62,6 +63,7 @@ describe('scoreMapping', () => {
     expect(mapped.metadata.tempo?.bpm).toBe(120);
     expect(mapped.staffType).toBe('grand');
     expect(mapped.measures).toHaveLength(1);
+    expect(mapped.pages).toEqual(['data:image/png;base64,mockPage1']);
 
     const m1 = mapped.measures[0];
     expect(m1.timeSignature?.beatType).toBe(4);

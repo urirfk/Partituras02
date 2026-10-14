@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { useScoreConfig } from '../../context/useScoreConfig';
 import { partitionMeasuresIntoSystems } from '../../renderer/layout/systemPartitioning';
 import { SvgSystem } from '../../renderer/svg/SvgSystem';
@@ -23,6 +24,7 @@ export const DidacticScoreCanvas: React.FC<DidacticScoreCanvasProps> = ({
   selectedNoteId,
   className = '',
 }) => {
+  const { t } = useTranslation();
   const { config } = useScoreConfig();
 
   // Scale multipliers
@@ -64,64 +66,73 @@ export const DidacticScoreCanvas: React.FC<DidacticScoreCanvasProps> = ({
           </div>
         </div>
 
-        {/* SVG Systems View */}
-        <svg
-          viewBox={`0 0 800 ${totalSvgHeight}`}
-          width="100%"
-          height={totalSvgHeight}
-          className="overflow-visible select-none"
-          data-testid="score-svg-root"
-        >
-          {systems.map((system, sysIdx) => {
-            const systemY = 30 + sysIdx * systemHeight;
-            return (
-              <g
-                key={`sys-${system.systemIndex}`}
-                transform={`translate(0, ${systemY})`}
-              >
-                <SvgSystem
-                  system={system}
-                  baseY={40}
-                  lineSpacing={lineSpacing}
-                  staffType={score.staffType}
-                  staffGap={staffGap}
-                  showNoteNames={config.showNoteNames}
-                  showAccidentals={config.showAccidentals}
-                  showFingerings={config.showFingerings}
-                  showChords={config.showChords}
-                  chordNotation={config.chordNotation}
-                  showLyrics={config.showLyrics}
-                  showMeasureNumbers={true}
-                  selectedNoteId={selectedNoteId}
-                  onNoteClick={(note) => {
-                    // Find which measure and staff contains this note
-                    let foundMeasureNumber = 1;
-                    let foundStaff: 'upper' | 'lower' = 'upper';
-                    for (const m of score.measures) {
-                      if (m.notes.some((n) => n.id === note.id)) {
-                        foundMeasureNumber = m.number;
-                        foundStaff = 'upper';
-                        break;
+        {/* SVG Systems View or Empty State */}
+        {systems.length === 0 ? (
+          <div
+            className="flex flex-col items-center justify-center py-24 text-zinc-400 dark:text-zinc-500"
+            data-testid="empty-score-measures"
+          >
+            <p className="text-sm font-medium">{t('canvas.noMeasures')}</p>
+          </div>
+        ) : (
+          <svg
+            viewBox={`0 0 800 ${totalSvgHeight}`}
+            width="100%"
+            height={totalSvgHeight}
+            className="overflow-visible select-none"
+            data-testid="score-svg-root"
+          >
+            {systems.map((system, sysIdx) => {
+              const systemY = 30 + sysIdx * systemHeight;
+              return (
+                <g
+                  key={`sys-${system.systemIndex}`}
+                  transform={`translate(0, ${systemY})`}
+                >
+                  <SvgSystem
+                    system={system}
+                    baseY={40}
+                    lineSpacing={lineSpacing}
+                    staffType={score.staffType}
+                    staffGap={staffGap}
+                    showNoteNames={config.showNoteNames}
+                    showAccidentals={config.showAccidentals}
+                    showFingerings={config.showFingerings}
+                    showChords={config.showChords}
+                    chordNotation={config.chordNotation}
+                    showLyrics={config.showLyrics}
+                    showMeasureNumbers={true}
+                    selectedNoteId={selectedNoteId}
+                    onNoteClick={(note) => {
+                      // Find which measure and staff contains this note
+                      let foundMeasureNumber = 1;
+                      let foundStaff: 'upper' | 'lower' = 'upper';
+                      for (const m of score.measures) {
+                        if (m.notes.some((n) => n.id === note.id)) {
+                          foundMeasureNumber = m.number;
+                          foundStaff = 'upper';
+                          break;
+                        }
+                        if (m.lowerNotes && m.lowerNotes.some((n) => n.id === note.id)) {
+                          foundMeasureNumber = m.number;
+                          foundStaff = 'lower';
+                          break;
+                        }
                       }
-                      if (m.lowerNotes && m.lowerNotes.some((n) => n.id === note.id)) {
-                        foundMeasureNumber = m.number;
-                        foundStaff = 'lower';
-                        break;
-                      }
-                    }
-                    onNoteClick?.(
-                      note,
-                      foundMeasureNumber,
-                      foundStaff,
-                      window.innerWidth / 2,
-                      window.innerHeight / 3
-                    );
-                  }}
-                />
-              </g>
-            );
-          })}
-        </svg>
+                      onNoteClick?.(
+                        note,
+                        foundMeasureNumber,
+                        foundStaff,
+                        window.innerWidth / 2,
+                        window.innerHeight / 3
+                      );
+                    }}
+                  />
+                </g>
+              );
+            })}
+          </svg>
+        )}
       </div>
     </div>
   );
