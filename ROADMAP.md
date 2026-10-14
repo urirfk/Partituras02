@@ -56,9 +56,10 @@ Sistema de limpieza y reformatizado didáctico de partituras para piano y teclad
 - [x] **Fase 3: Pipeline de Ingesta, Preprocesamiento de Imagen y Motor OMR** (Completada -> `tasks/phase-03/`)
 - [x] **Fase 4: Interfaz Split-Screen Zen, Editor Asistido y Controles Ortogonales** (Completada -> `tasks/phase-04/`)
 - [x] **Fase 5: Modos de Salida (Exportador PDF A4 Vectorial, MusicXML/MIDI, Proyecto Local y Modo Atril)** (Completada -> `tasks/phase-05/`)
-- [>] **Fase 6: Pruebas Integradas End-to-End, Refinamiento Visual y Despliegue** (EN CURSO -> `tasks/phase-06/`)
+- [x] **Fase 6: Pruebas Integradas End-to-End, Refinamiento Visual y Despliegue** (Completada -> `tasks/phase-06/`)
 
 ---
 
 ## 5. HISTORIAL DE VERSIONES (SemVer)
 - **v1.0.0 (2026-10-13):** Emisión inicial de arquitectura consensuada, contratos de calidad y roadmap macro de 6 fases tras debate técnico formal (`ini01.md`).
+- **v1.1.0 (2026-10-14):** Conclusión integral del proyecto Partituras02 (Fases 1 a 6 completadas al 100%): motor didáctico SVG, pipeline OMR y análisis armónico asistido, interfaz Zen Split-Screen, exportación PDF vectorial A4 1:1, MusicXML/MIDI/`.partitura`, Modo Atril inmersivo, suite E2E de 207 tests y scripts unificados de despliegue y producción.

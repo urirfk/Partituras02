@@ -9,10 +9,10 @@ Esta fase consolida y valida el sistema completo mediante pruebas de integració
 
 - [x] **6.1: Suite de Integración End-to-End y Pruebas de Invarianza Ortogonal** (-> `6.1-e2e-testing.md`)
 - [x] **6.2: Refinamiento Visual Zen, Accesibilidad y Adaptabilidad Responsive** (-> `6.2-visual-refinement.md`)
-- [>] **6.3: Verificación Canónica de Producción, Build Final y Documentación de Despliegue** (-> `6.3-production-deployment.md`)
+- [x] **6.3: Verificación Canónica de Producción, Build Final y Documentación de Despliegue** (-> `6.3-production-deployment.md`)
 
 ---
 
 ## Registro de Transición de Fase
 - **Fase 5:** Completada al 100% (Exportador PDF A4, MusicXML/MIDI, Proyecto Local `.partitura`, y Modo Atril).
-- **Fase 6:** Activada `[>]` en ROADMAP.md.
+- **Fase 6:** Completada al 100% (E2E Integration, Visual Refinement, A11y, Build de Producción y Scripts de Despliegue).
