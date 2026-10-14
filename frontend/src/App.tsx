@@ -54,14 +54,25 @@ const AppMain: React.FC = () => {
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
       const target = e.target as HTMLElement;
-      const isInput = target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA');
-      if (!isInput && (e.key === 'm' || e.key === 'M') && !isStandModeActive) {
+      const isInput = target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.tagName === 'SELECT');
+      if (isInput) return;
+
+      if ((e.key === 'm' || e.key === 'M') && !isStandModeActive) {
         enterStandMode();
+      } else if ((e.ctrlKey || e.metaKey) && (e.key === 'z' || e.key === 'Z') && !e.shiftKey) {
+        e.preventDefault();
+        undo();
+      } else if (
+        ((e.ctrlKey || e.metaKey) && (e.key === 'y' || e.key === 'Y')) ||
+        ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'z' || e.key === 'Z'))
+      ) {
+        e.preventDefault();
+        redo();
       }
     };
     window.addEventListener('keydown', handleKey);
     return () => window.removeEventListener('keydown', handleKey);
-  }, [isStandModeActive]);
+  }, [isStandModeActive, undo, redo]);
 
   const handleScoreLoaded = (loadedScore: Score, pages: string[]) => {
     setScore(loadedScore);
@@ -221,16 +232,22 @@ const AppMain: React.FC = () => {
         )}
 
         {/* Note Edit Popover */}
-        {activeNote && (
-          <NoteEditPopover
-            note={activeNote.note}
-            measureNumber={activeNote.measureNumber}
-            staff={activeNote.staff}
-            anchorPosition={activeNote.anchorPosition}
-            isOpen={Boolean(activeNote)}
-            onClose={() => setActiveNote(null)}
-          />
-        )}
+        {activeNote && (() => {
+          const measure = score.measures.find((m) => m.number === activeNote.measureNumber);
+          const notesList = activeNote.staff === 'lower' ? (measure?.lowerNotes || []) : (measure?.notes || []);
+          const liveNote = notesList.find((n) => n.id === activeNote.note.id) || activeNote.note;
+
+          return (
+            <NoteEditPopover
+              note={liveNote}
+              measureNumber={activeNote.measureNumber}
+              staff={activeNote.staff}
+              anchorPosition={activeNote.anchorPosition}
+              isOpen={Boolean(activeNote)}
+              onClose={() => setActiveNote(null)}
+            />
+          );
+        })()}
 
         {/* PDF Export Modal */}
         <PdfExportModal
