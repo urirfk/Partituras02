@@ -1,5 +1,5 @@
 import { BookOpen, Globe, Music, Printer, Redo2, Undo2, Upload } from 'lucide-react';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { OrthogonalControlsBar } from './components/controls/OrthogonalControlsBar';
 import { NoteEditPopover } from './components/editor/NoteEditPopover';
@@ -9,6 +9,7 @@ import { ScoreDropzone } from './components/upload/ScoreDropzone';
 import { OriginalDocumentViewer } from './components/viewer/OriginalDocumentViewer';
 import { PdfExportModal } from './components/export/PdfExportModal';
 import { StructuredExportMenu } from './components/export/StructuredExportMenu';
+import { MusicStandMode } from './components/stand/MusicStandMode';
 import { ScoreConfigProvider } from './context/ScoreConfigContext';
 import { ScoreHistoryProvider } from './context/ScoreHistoryContext';
 import { useScoreHistory } from './context/useScoreHistory';
@@ -28,12 +29,39 @@ const AppMain: React.FC = () => {
   const [originalPages, setOriginalPages] = useState<string[]>([]);
   const [isUploadOpen, setIsUploadOpen] = useState<boolean>(false);
   const [isPdfExportOpen, setIsPdfExportOpen] = useState<boolean>(false);
+  const [isStandModeActive, setIsStandModeActive] = useState<boolean>(false);
   const [activeNote, setActiveNote] = useState<ActiveNoteState | null>(null);
 
   const toggleLanguage = () => {
     const nextLang = i18n.language === 'es' ? 'en' : 'es';
     i18n.changeLanguage(nextLang);
   };
+
+  const enterStandMode = () => {
+    setIsStandModeActive(true);
+    if (document.documentElement?.requestFullscreen && !document.fullscreenElement) {
+      document.documentElement.requestFullscreen().catch(() => {});
+    }
+  };
+
+  const exitStandMode = () => {
+    setIsStandModeActive(false);
+    if (document.fullscreenElement && document.exitFullscreen) {
+      document.exitFullscreen().catch(() => {});
+    }
+  };
+
+  useEffect(() => {
+    const handleKey = (e: KeyboardEvent) => {
+      const target = e.target as HTMLElement;
+      const isInput = target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA');
+      if (!isInput && (e.key === 'm' || e.key === 'M') && !isStandModeActive) {
+        enterStandMode();
+      }
+    };
+    window.addEventListener('keydown', handleKey);
+    return () => window.removeEventListener('keydown', handleKey);
+  }, [isStandModeActive]);
 
   const handleScoreLoaded = (loadedScore: Score, pages: string[]) => {
     setScore(loadedScore);
@@ -113,10 +141,12 @@ const AppMain: React.FC = () => {
           {/* Stand Mode & Structured Export / PDF */}
           <button
             type="button"
-            className="hidden md:flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg border border-zinc-300 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition"
+            onClick={enterStandMode}
+            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg border border-zinc-300 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition"
+            data-testid="stand-mode-btn"
           >
             <BookOpen className="w-3.5 h-3.5" />
-            {t('nav.standMode')}
+            <span className="hidden sm:inline">{t('nav.standMode')}</span>
           </button>
 
           <StructuredExportMenu
@@ -208,6 +238,14 @@ const AppMain: React.FC = () => {
           onClose={() => setIsPdfExportOpen(false)}
           score={score}
         />
+
+        {/* Immersive Music Stand Mode */}
+        {isStandModeActive && (
+          <MusicStandMode
+            score={score}
+            onExit={exitStandMode}
+          />
+        )}
       </div>
     </div>
   );

@@ -84,4 +84,27 @@ describe('App Component i18n and UI', () => {
     expect(screen.getByTestId('export-musicxml-option')).toBeInTheDocument();
     expect(screen.getByTestId('export-midi-option')).toBeInTheDocument();
   });
+
+  it('enters and exits Stand Mode when button is clicked', () => {
+    render(<App />);
+    const standBtn = screen.getByTestId('stand-mode-btn');
+    fireEvent.click(standBtn);
+
+    expect(screen.getByTestId('music-stand-mode')).toBeInTheDocument();
+
+    const exitBtn = screen.getByTestId('exit-stand-btn');
+    fireEvent.click(exitBtn);
+
+    expect(screen.queryByTestId('music-stand-mode')).not.toBeInTheDocument();
+  });
+
+  it('enters Stand Mode via "m" key shortcut and exits with Escape', () => {
+    render(<App />);
+    fireEvent.keyDown(window, { key: 'm' });
+
+    expect(screen.getByTestId('music-stand-mode')).toBeInTheDocument();
+
+    fireEvent.keyDown(window, { key: 'Escape' });
+    expect(screen.queryByTestId('music-stand-mode')).not.toBeInTheDocument();
+  });
 });
