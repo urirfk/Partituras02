@@ -51,7 +51,7 @@ describe('E2E Responsive Layout & Touch Ergonomics Suite', () => {
   });
 
   it('handles touch gestures (touchStart, touchMove, touchEnd) on split divider', () => {
-    const { container } = render(
+    render(
       <SplitScreenLayout
         originalPanel={<div>Original</div>}
         cleanPanel={<div>Clean</div>}

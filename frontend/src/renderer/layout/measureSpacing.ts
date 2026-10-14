@@ -56,10 +56,7 @@ export function calculateMeasureNotePositions(
     ]
   }
 
-  const availableWidth = Math.max(
-    measureWidth - startPadding - endPadding,
-    (notes.length - 1) * minNoteDistance,
-  )
+  const availableWidth = Math.max(20, measureWidth - startPadding - endPadding)
 
   // Calculate weights based on musical duration
   const weights = notes.map((n) => getDurationWeight(n.duration, n.dots))
@@ -71,14 +68,17 @@ export function calculateMeasureNotePositions(
 
   for (let i = 0; i < notes.length - 1; i++) {
     currentAccumulatedWeight += weights[i]
-    const proportion = currentAccumulatedWeight / totalWeight
+    const proportion = totalWeight > 0 ? currentAccumulatedWeight / totalWeight : 0
     rawPositions.push(proportion * availableWidth)
   }
 
-  // Enforce minimum note distance iteratively to prevent any capsule crowding
+  // Enforce minimum note distance, capped by available space so notes never overflow
+  const maxPossibleDistance = availableWidth / (notes.length - 1)
+  const effectiveMinDistance = Math.min(minNoteDistance, maxPossibleDistance)
+
   const adjustedPositions = [...rawPositions]
   for (let i = 1; i < adjustedPositions.length; i++) {
-    const minRequiredX = adjustedPositions[i - 1] + minNoteDistance
+    const minRequiredX = adjustedPositions[i - 1] + effectiveMinDistance
     if (adjustedPositions[i] < minRequiredX) {
       adjustedPositions[i] = minRequiredX
     }
@@ -90,7 +90,7 @@ export function calculateMeasureNotePositions(
 
   return notes.map((note, index) => ({
     note,
-    x: startPadding + adjustedPositions[index] * scale,
+    x: startPadding + Math.min(availableWidth, adjustedPositions[index] * scale),
   }))
 }
 
@@ -162,16 +162,17 @@ export function calculateGrandStaffNotePositions(
     }
   }
 
-  const availableWidth = Math.max(
-    measureWidth - startPadding - endPadding,
-    (uniqueOnsets.length - 1) * minNoteDistance,
-  )
+  const availableWidth = Math.max(20, measureWidth - startPadding - endPadding)
 
   // Find max measure length in beats
   const maxOnset = uniqueOnsets[uniqueOnsets.length - 1]
   const upperTotal = upperTimed.reduce((sum, t) => sum + t.weight, 0)
   const lowerTotal = lowerTimed.reduce((sum, t) => sum + t.weight, 0)
   const measureSpan = Math.max(maxOnset, upperTotal, lowerTotal)
+
+  // Enforce minimum note distance, capped by available space so notes never overflow
+  const maxPossibleDistance = availableWidth / (uniqueOnsets.length - 1)
+  const effectiveMinDistance = Math.min(minNoteDistance, maxPossibleDistance)
 
   // Raw proportional positions for each onset
   const rawPositions = uniqueOnsets.map((onset) =>
@@ -181,7 +182,7 @@ export function calculateGrandStaffNotePositions(
   // Enforce minimum note distance
   const adjustedPositions = [...rawPositions]
   for (let i = 1; i < adjustedPositions.length; i++) {
-    const minRequiredX = adjustedPositions[i - 1] + minNoteDistance
+    const minRequiredX = adjustedPositions[i - 1] + effectiveMinDistance
     if (adjustedPositions[i] < minRequiredX) {
       adjustedPositions[i] = minRequiredX
     }
@@ -193,7 +194,7 @@ export function calculateGrandStaffNotePositions(
 
   const onsetToX = new Map<number, number>()
   uniqueOnsets.forEach((onset, idx) => {
-    onsetToX.set(onset, startPadding + adjustedPositions[idx] * scale)
+    onsetToX.set(onset, startPadding + Math.min(availableWidth, adjustedPositions[idx] * scale))
   })
 
   return {

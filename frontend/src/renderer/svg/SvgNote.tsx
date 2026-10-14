@@ -20,6 +20,9 @@ export interface SvgNoteProps {
   showFingerings?: boolean
   showLyrics?: boolean
   stemDirection?: 'up' | 'down' | 'auto'
+  isBeamed?: boolean
+  stemEndYOverride?: number
+  isCompact?: boolean
   selected?: boolean
   onClick?: () => void
   className?: string
@@ -36,6 +39,9 @@ export const SvgNote: React.FC<SvgNoteProps> = ({
   showFingerings = true,
   showLyrics = true,
   stemDirection = 'auto',
+  isBeamed = false,
+  stemEndYOverride,
+  isCompact = false,
   selected = false,
   onClick,
   className = '',
@@ -82,7 +88,15 @@ export const SvgNote: React.FC<SvgNoteProps> = ({
 
   // Calculate notehead width for stem alignment
   const hasLongName = showNoteNames && pitch.solfege && (showAccidentals && pitch.accidental !== 'natural' ? 3 : 2) >= 3
-  const halfCapsuleWidth = showNoteNames ? (hasLongName ? 16 : 13) : 6.5
+  const halfCapsuleWidth = showNoteNames
+    ? isCompact
+      ? hasLongName
+        ? 11.5
+        : 9.5
+      : hasLongName
+      ? 16
+      : 13
+    : 6.5
 
   // Stem Direction Determination
   const diatonicIndex = getDiatonicIndex(pitch.step, pitch.octave, clef)
@@ -93,7 +107,12 @@ export const SvgNote: React.FC<SvgNoteProps> = ({
   const stemHeight = 35
   const stemX = actualStemDir === 'up' ? x + halfCapsuleWidth : x - halfCapsuleWidth
   const stemStartY = noteY
-  const stemEndY = actualStemDir === 'up' ? noteY - stemHeight : noteY + stemHeight
+  const stemEndY =
+    stemEndYOverride !== undefined
+      ? stemEndYOverride
+      : actualStemDir === 'up'
+      ? noteY - stemHeight
+      : noteY + stemHeight
 
   // Dot coordinates
   const hasDots = note.dots > 0
@@ -154,8 +173,8 @@ export const SvgNote: React.FC<SvgNoteProps> = ({
         />
       )}
 
-      {/* Flags for Eighth / 16th isolated notes */}
-      {hasStem && (note.duration === 'eighth' || note.duration === '16th') && (
+      {/* Flags for Eighth / 16th isolated notes (suppressed when beamed) */}
+      {hasStem && !isBeamed && (note.duration === 'eighth' || note.duration === '16th') && (
         <path
           d={
             actualStemDir === 'up'
@@ -188,6 +207,7 @@ export const SvgNote: React.FC<SvgNoteProps> = ({
         pitch={pitch}
         showNoteNames={showNoteNames}
         showAccidentals={showAccidentals}
+        isCompact={isCompact}
       />
 
       {/* Fingering Number (1 to 5) above note */}

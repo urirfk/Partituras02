@@ -115,4 +115,25 @@ describe('SvgNote Component', () => {
     fireEvent.click(screen.getByTestId('notehead-capsule'))
     expect(handleClick).toHaveBeenCalledTimes(1)
   })
+
+  it('suppresses flag when isBeamed is true and uses stemEndYOverride', () => {
+    render(
+      <svg>
+        <SvgNote
+          note={flatDottedEighthNote}
+          x={150}
+          baseY={50}
+          isBeamed={true}
+          stemEndYOverride={25}
+        />
+      </svg>,
+    )
+
+    // Flag must be suppressed
+    expect(screen.queryByTestId('note-flag')).not.toBeInTheDocument()
+    // Stem must use stemEndYOverride
+    const stem = screen.getByTestId('note-stem')
+    expect(stem).toHaveAttribute('y2', '25')
+  })
 })
+

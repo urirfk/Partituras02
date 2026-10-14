@@ -1,4 +1,4 @@
-from typing import Any, Optional
+from typing import Any, Literal, Optional
 
 import music21
 
@@ -115,6 +115,27 @@ def parse_note_element(
     elif hasattr(element, "lyrics") and element.lyrics:
         lyrics_text = element.lyrics[0].text
 
+    # Tie or Slur info
+    tie_type: Optional[Literal["start", "stop", "continue"]] = None
+    if (
+        hasattr(element, "tie")
+        and element.tie is not None
+        and getattr(element.tie, "type", None) in ("start", "stop", "continue")
+    ):
+        tie_type = element.tie.type
+    elif hasattr(element, "getSpannerSites"):
+        for sp in element.getSpannerSites():
+            if isinstance(sp, music21.spanner.Slur):
+                if sp.isFirst(element):
+                    tie_type = "start"
+                    break
+                elif sp.isLast(element):
+                    tie_type = "stop"
+                    break
+                else:
+                    tie_type = "continue"
+                    break
+
     # Pitch
     pitch_schema: Optional[PitchSchema] = None
     if hasattr(element, "pitch"):
@@ -130,4 +151,5 @@ def parse_note_element(
         dots=dots,
         lyrics=lyrics_text,
         tuplet=tuplet_info,
+        tie=tie_type,
     )

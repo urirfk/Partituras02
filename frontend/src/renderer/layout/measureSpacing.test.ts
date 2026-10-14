@@ -123,6 +123,65 @@ describe('Measure Spacing Algorithm', () => {
       expect(lower[2].x).toBeGreaterThan(lower[1].x)
       expect(lower[3].x).toBeGreaterThan(lower[2].x)
     })
+
+    it('strictly guarantees that dense notes never exceed measureWidth - endPadding', () => {
+      // 12 eighth notes in a 350px measure
+      const denseNotes: Note[] = Array.from({ length: 12 }, (_, i) =>
+        createNote(`n${i}`, 'eighth'),
+      )
+      const measureWidth = 350
+      const startPadding = 30
+      const endPadding = 20
+
+      const positioned = calculateMeasureNotePositions(denseNotes, {
+        measureWidth,
+        startPadding,
+        endPadding,
+        minNoteDistance: 38,
+      })
+
+      expect(positioned).toHaveLength(12)
+      for (const pn of positioned) {
+        expect(pn.x).toBeGreaterThanOrEqual(startPadding)
+        expect(pn.x).toBeLessThanOrEqual(measureWidth - endPadding + 0.001)
+      }
+    })
+
+    it('strictly confines Grand Staff 16th notes within measure boundaries', () => {
+      const upper16ths: Note[] = Array.from({ length: 16 }, (_, i) =>
+        createNote(`u${i}`, '16th'),
+      )
+      const lower8ths: Note[] = Array.from({ length: 8 }, (_, i) =>
+        createNote(`l${i}`, 'eighth'),
+      )
+      const measureWidth = 380
+      const startPadding = 25
+      const endPadding = 20
+
+      const { upper, lower } = calculateGrandStaffNotePositions(
+        upper16ths,
+        lower8ths,
+        {
+          measureWidth,
+          startPadding,
+          endPadding,
+          minNoteDistance: 35,
+        },
+      )
+
+      expect(upper).toHaveLength(16)
+      expect(lower).toHaveLength(8)
+
+      for (const pn of upper) {
+        expect(pn.x).toBeGreaterThanOrEqual(startPadding)
+        expect(pn.x).toBeLessThanOrEqual(measureWidth - endPadding + 0.001)
+      }
+      for (const pn of lower) {
+        expect(pn.x).toBeGreaterThanOrEqual(startPadding)
+        expect(pn.x).toBeLessThanOrEqual(measureWidth - endPadding + 0.001)
+      }
+    })
   })
 })
+
 

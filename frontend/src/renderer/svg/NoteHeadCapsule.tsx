@@ -7,6 +7,7 @@ export interface NoteHeadCapsuleProps {
   pitch?: Pitch
   showNoteNames?: boolean
   showAccidentals?: boolean
+  isCompact?: boolean
   isRest?: boolean
   className?: string
   onClick?: () => void
@@ -23,6 +24,7 @@ export const NoteHeadCapsule: React.FC<NoteHeadCapsuleProps> = ({
   pitch,
   showNoteNames = true,
   showAccidentals = true,
+  isCompact = false,
   isRest = false,
   className = '',
   onClick,
@@ -59,12 +61,13 @@ export const NoteHeadCapsule: React.FC<NoteHeadCapsuleProps> = ({
 
   const displayText = `${prefix}${solfege}`
 
-  // Calculate pill width dynamically based on text length
-  // e.g. "mi" (2 chars) -> 26px, "♭la" (3 chars) -> 32px
-  const width = displayText.length >= 3 ? 32 : 26
-  const height = 15
-  const rx = 4 // rounded corners creating a smooth stadium pill
-  const ry = 4
+  const isLong = displayText.length >= 3
+  const width = isCompact ? (isLong ? 23 : 19) : isLong ? 32 : 26
+  const height = isCompact ? 13 : 15
+  const rx = isCompact ? 3 : 4
+  const ry = isCompact ? 3 : 4
+  const fontSize = isCompact ? (isLong ? '8px' : '9px') : '10.5px'
+  const letterSpacing = isCompact ? '-0.5px' : '-0.3px'
 
   const rectX = x - width / 2
   const rectY = y - height / 2
@@ -92,12 +95,12 @@ export const NoteHeadCapsule: React.FC<NoteHeadCapsuleProps> = ({
         x={x}
         y={y + 0.5}
         fill="#ffffff"
-        fontSize="10.5px"
+        fontSize={fontSize}
         fontWeight="bold"
         fontFamily="ui-sans-serif, system-ui, sans-serif"
         textAnchor="middle"
         dominantBaseline="central"
-        letterSpacing="-0.3px"
+        letterSpacing={letterSpacing}
       >
         {displayText}
       </text>
