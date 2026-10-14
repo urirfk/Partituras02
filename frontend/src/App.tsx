@@ -8,6 +8,7 @@ import { DidacticScoreCanvas } from './components/score/DidacticScoreCanvas';
 import { ScoreDropzone } from './components/upload/ScoreDropzone';
 import { OriginalDocumentViewer } from './components/viewer/OriginalDocumentViewer';
 import { PdfExportModal } from './components/export/PdfExportModal';
+import { StructuredExportMenu } from './components/export/StructuredExportMenu';
 import { ScoreConfigProvider } from './context/ScoreConfigContext';
 import { ScoreHistoryProvider } from './context/ScoreHistoryContext';
 import { useScoreHistory } from './context/useScoreHistory';
@@ -109,7 +110,7 @@ const AppMain: React.FC = () => {
             <span>{i18n.language.substring(0, 2).toUpperCase()}</span>
           </button>
 
-          {/* Stand Mode & PDF Export */}
+          {/* Stand Mode & Structured Export / PDF */}
           <button
             type="button"
             className="hidden md:flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg border border-zinc-300 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition"
@@ -117,6 +118,18 @@ const AppMain: React.FC = () => {
             <BookOpen className="w-3.5 h-3.5" />
             {t('nav.standMode')}
           </button>
+
+          <StructuredExportMenu
+            score={score}
+            originalPages={originalPages}
+            onSessionLoaded={(loadedSession) => {
+              setScore(loadedSession.score);
+              if (loadedSession.originalPages && loadedSession.originalPages.length > 0) {
+                setOriginalPages(loadedSession.originalPages);
+              }
+            }}
+          />
+
           <button
             type="button"
             onClick={() => setIsPdfExportOpen(true)}

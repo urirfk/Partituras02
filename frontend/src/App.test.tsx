@@ -71,4 +71,17 @@ describe('App Component i18n and UI', () => {
 
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
   });
+
+  it('renders StructuredExportMenu and displays export options when clicked', () => {
+    render(<App />);
+    const menuBtn = screen.getByTestId('structured-export-btn');
+    expect(menuBtn).toBeInTheDocument();
+
+    fireEvent.click(menuBtn);
+    expect(screen.getByTestId('structured-export-dropdown')).toBeInTheDocument();
+    expect(screen.getByTestId('save-partitura-option')).toBeInTheDocument();
+    expect(screen.getByTestId('load-partitura-option')).toBeInTheDocument();
+    expect(screen.getByTestId('export-musicxml-option')).toBeInTheDocument();
+    expect(screen.getByTestId('export-midi-option')).toBeInTheDocument();
+  });
 });

@@ -99,5 +99,18 @@
     "downloading": "Generating vector PDF...",
     "download": "Download PDF",
     "success": "PDF downloaded successfully!"
+  },
+  "exportMenu": {
+    "button": "Export / Save",
+    "saveSession": "Save project (.partitura)",
+    "saveSessionDesc": "Saves the score and all didactic settings",
+    "loadSession": "Load project (.partitura)",
+    "loadSessionDesc": "Restore a previously saved project",
+    "exportMusicXml": "Export MusicXML (.musicxml)",
+    "exportMusicXmlDesc": "Compatible with MuseScore, Sibelius and Finale",
+    "exportMidi": "Export MIDI (.mid)",
+    "exportMidiDesc": "Standard MIDI audio sequence",
+    "exporting": "Exporting...",
+    "loadError": "Error loading project file"
   }
 }
